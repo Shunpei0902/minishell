@@ -3,14 +3,17 @@ NAME := minishell
 SDIR := src/
 ODIR := obj/
 IDIR := inc/
-LDIR := ext/lib/
-LINC := ext/include/readline
-SRCS := main.c 
+LDIR = $(RLDIR)/lib
+LINC = $(RLDIR)/include
+SRCS := $(SDIR)/*.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 INCS = -I$(IDIR) -I$(LINC)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP
-LDFLAGS := -L$(LDIR) -lhistory -L$(LDIR) -lreadline -DREADLINE_LIBRARY
+LDFLAGS := -lhistory -lreadline
+RLDIR =`brew --prefix readline`
+LIBFT_DIR = ./libft
+LIBFT_LIB = $(LIBFT_DIR)/libft.a
 CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS)
 CC := cc
 MKDIR := mkdir -p
@@ -34,17 +37,23 @@ ifeq ($(OS), Darwin)
 	CFLAGS += -D__Apple__
 endif
 
-all: $(NAME)
+all: $(NAME) $(LIBFT_LIB)
 
-$(NAME): $(OBJS) | $(ODIR)
-	$(CC) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
+$(NAME): $(SRCS) $(LIBFT_LIB)
+	$(CC)  $(CFLAGS) -o $(NAME) $(LIBFT_LIB) $^ $(INCS) -L$(LDIR) $(LDFLAGS) 
+
+# $(NAME): $(OBJS) | $(ODIR)
+# 	$(CC)  $(CFLAGS) -o $(NAME) $^ -L$(LDIR) $(LDFLAGS)
 
 $(ODIR)%.o:$(SDIR)%.c | $(ODIR)
-	$(CC) $(CFLAGS) $(INCS) -o $@ -c $<
+	$(CC) $(CFLAGS) $(INCS) -o $@ -c $< $(LDFLAGS)
 
 $(ODIR):
 	@echo "Creating directory: $(ODIR)"
 	$(MKDIR) $@
+
+$(LIBFT_LIB):
+	@make -C $(LIBFT_DIR)
 
 clean:
 	rm -rf $(ODIR)
