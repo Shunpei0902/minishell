@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 23:39:49 by sasano            #+#    #+#             */
-/*   Updated: 2024/03/28 12:37:00 by sasano           ###   ########.fr       */
+/*   Updated: 2024/03/29 09:21:01 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ void	test_tokenize(char *input)
 	}
 }
 
-int	main(void)
-{
-	test_tokenize("ls -l | grep 'txt' > output.txt");
-	test_tokenize("echo \"Hello, world\" && echo Goodbye");
-	test_tokenize("echo \"Hello,   world\" && echo >>  <<Goodbye");
-	// 他のテストケースを追加
-	return (0);
-}
+// int	main(void)
+// {
+// 	test_tokenize("ls -l | grep 'txt' > output.txt");
+// 	test_tokenize("echo \"Hello, world\" && echo Goodbye");
+// 	test_tokenize("echo \"Hello,   world\" && echo >>  <<Goodbye");
+// 	// 他のテストケースを追加
+// 	return (0);
+// }

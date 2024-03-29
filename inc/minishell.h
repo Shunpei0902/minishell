@@ -3,6 +3,7 @@
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <limits.h>
+# include <stdbool.h>
 # include <stdlib.h>
 # include <unistd.h>
 
@@ -32,9 +33,14 @@ typedef struct s_token
 	struct s_token		*next;
 }						t_token;
 
-bool					syntax_error = false;
+extern bool				syntax_error;
 
-void					fatal_error(const char *msg);
+void					fatal_error(const char *msg) __attribute__((noreturn));
+void					err_exit(const char *location, const char *msg,
+							int status);
+void					tokenize_error(const char *location, char *line);
+void					free_tokens(t_token *tokens);
+void					free_argv(char **argv);
 t_token					*tokenize(char *line);
 
 #endif

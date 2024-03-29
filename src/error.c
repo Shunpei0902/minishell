@@ -1,18 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_error.c                                   :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/28 12:48:46 by sasano            #+#    #+#             */
-/*   Updated: 2024/03/28 13:09:58 by sasano           ###   ########.fr       */
+/*   Created: 2024/03/28 13:53:38 by sasano            #+#    #+#             */
+/*   Updated: 2024/03/29 09:18:56 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	tokenize_error(char *line, int i)
+bool	syntax_error = false;
+
+void	fatal_error(const char *msg)
+{
+	dprintf(STDERR_FILENO, "Fatal Error: %s\n", msg);
+	exit(1);
+}
+
+void	err_exit(const char *location, const char *msg, int status)
+{
+	dprintf(STDERR_FILENO, "minishell: %s: %s\n", location, msg);
+	exit(status);
+}
+
+void	tokenize_error(const char *location, char *line)
 {
 	syntax_error = true;
+	dprintf(STDERR_FILENO, "Syntax Error: %s\n", location);
+	while (*line)
+		line++;
 }

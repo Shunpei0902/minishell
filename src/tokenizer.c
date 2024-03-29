@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 21:35:05 by sasano            #+#    #+#             */
-/*   Updated: 2024/03/28 12:37:56 by sasano           ###   ########.fr       */
+/*   Updated: 2024/03/29 09:51:27 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,13 @@ void	check_quotation(char *line, int *i, int *start, int *end)
 		quote = line[*i];
 		(*start)++;
 		(*i)++;
-		while (line[*i] && line[*i] != quote)
+		while (line[*i] != quote)
 		{
 			if (line[*i] == '\0' || line[*i] == '\n')
-				fatal_error("error: syntax error\n");
+			{
+				tokenize_error(&(line[*start]), line);
+				break ;
+			}
 			(*i)++;
 		}
 		*end = *i;
@@ -119,6 +122,7 @@ t_token	*tokenize(char *line)
 
 	current = NULL;
 	head = NULL;
+	syntax_error = false;
 	i = 0;
 	while (line[i])
 	{
