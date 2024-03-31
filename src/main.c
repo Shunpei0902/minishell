@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
+/*   Updated: 2024/03/31 02:53:31 by sasano           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	validate_path(const char *path, const char *filename)
@@ -95,6 +107,7 @@ int	exec(char *argv[])
 void	interpret(char *line, int *status)
 {
 	t_token	*tokens;
+	t_node	*node;
 	char	**argv;
 
 	tokens = tokenize(line);
@@ -104,9 +117,11 @@ void	interpret(char *line, int *status)
 		*status = 2;
 	else
 	{
-		argv = tokens_to_argv(tokens);
+		node = parse(tokens);
+		argv = tokens_to_argv(node->args);
 		*status = exec(argv);
 		free(argv);
+		free(node);
 	}
 	free_tokens(tokens);
 }

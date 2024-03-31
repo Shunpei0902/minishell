@@ -13,8 +13,10 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
+# define NOT_QUOTE 1
+
 // トークンの種類
-enum					e_token_type
+typedef enum e_token_type
 {
 	TOKEN_WORD,
 	TOKEN_PIPE,
@@ -23,24 +25,43 @@ enum					e_token_type
 	TOKEN_REDIR_APPEND,
 	TOKEN_SEMICOLON,
 	TOKEN_EOF
-}						t_token_type;
+}					t_token_type;
 
 // トークンの構造体
+// typedef struct s_token	t_token;
 typedef struct s_token
 {
-	enum e_token_type	type;
-	char				*value;
-	struct s_token		*next;
-}						t_token;
+	t_token_type	type;
+	char			*value;
+	struct s_token	*next;
+}					t_token;
 
-extern bool				syntax_error;
+//ノードの種類
+typedef enum e_node_type
+{
+	NODE_COMMAND,
+	NODE_PIPE,
+	NODE_REDIR_IN,
+	NODE_REDIR_OUT,
+}					t_node_type;
 
-void					fatal_error(const char *msg) __attribute__((noreturn));
-void					err_exit(const char *location, const char *msg,
-							int status);
-void					tokenize_error(const char *location, char *line);
-void					free_tokens(t_token *tokens);
-void					free_argv(char **argv);
-t_token					*tokenize(char *line);
+// ノードの構造体
+// typedef struct s_node	t_node;
+typedef struct s_node
+{
+	t_token			*args;
+	t_node_type		type;
+	struct s_node	*next;
+}					t_node;
+
+extern bool			syntax_error;
+
+void				fatal_error(const char *msg) __attribute__((noreturn));
+void				err_exit(const char *location, const char *msg, int status);
+void				tokenize_error(const char *location, char *line);
+void				free_tokens(t_token *tokens);
+void				free_argv(char **argv);
+t_token				*tokenize(char *line);
+t_node				*parse(t_token *tokens);
 
 #endif

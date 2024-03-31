@@ -5,115 +5,173 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/15 21:35:05 by sasano            #+#    #+#             */
-/*   Updated: 2024/03/29 09:51:27 by sasano           ###   ########.fr       */
+/*   Created: 2024/03/31 03:52:14 by sasano            #+#    #+#             */
+/*   Updated: 2024/03/31 10:00:01 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// トークンの種類を判別する
-enum e_token_type	check_token_type(char *line, int *i)
+bool	check_quote(char *line, int i)
 {
-	if (line[*i] == '|')
-	{
-		(*i)++;
+	return (line[i] == '\"' || line[i] == '\'');
+}
+
+bool	check_symbol(char *line, int i)
+{
+	return (!line[i] || line[i] == '\n' || line[i] == ' ' || line[i] == '\t'
+		|| line[i] == '\n' || line[i] == '|' || line[i] == '<' || line[i] == '>'
+		|| line[i] == ' ' || line[i] == '\t' || line[i] == '\n');
+}
+
+enum e_token_type	check_token_type(char *line, int i)
+{
+	if (line[i] == '|')
 		return (TOKEN_PIPE);
-	}
-	else if (line[*i] == '<')
+	else if (line[i] == '<')
 	{
-		(*i)++;
-		if (line[*i] == '<')
-		{
-			(*i)++;
+		i++;
+		if (line[i] == '<')
 			return (TOKEN_REDIR_APPEND);
-		}
 		return (TOKEN_REDIR_IN);
 	}
-	else if (line[*i] == '>')
+	else if (line[i] == '>')
 	{
-		(*i)++;
-		if (line[*i] == '>')
-		{
-			(*i)++;
+		i++;
+		if (line[i] == '>')
 			return (TOKEN_REDIR_APPEND);
-		}
 		return (TOKEN_REDIR_OUT);
 	}
 	return (TOKEN_WORD);
 }
 
-// クォーテーションのチェック
-void	check_quotation(char *line, int *i, int *start, int *end)
+char	validate_quote(char *line, int *i, int *start, int *end)
 {
-	char	quote;
+	char	quote_flag;
 
-	if (line[*i] == '\"' || line[*i] == '\'')
+	quote_flag = 0;
+	if (check_quote(line, *i))
 	{
-		quote = line[*i];
-		(*start)++;
+		quote_flag = line[*i];
 		(*i)++;
-		while (line[*i] != quote)
-		{
-			if (line[*i] == '\0' || line[*i] == '\n')
-			{
-				tokenize_error(&(line[*start]), line);
-				break ;
-			}
-			(*i)++;
-		}
-		*end = *i;
-		return ;
+		*start = *i;
 	}
-	*end = *i + 1;
+	while (quote_flag)
+	{
+		if (line[*i] == '\0' || line[*i] == '\n')
+		{
+			tokenize_error(&(line[*start]), line);
+			break ;
+		}
+		if (line[*i] == quote_flag)
+		{
+			*end = *i;
+			(*i)++;
+			return (quote_flag);
+		}
+		(*i)++;
+	}
+	return (quote_flag);
 }
-
-// トークンを追加する
-t_token	*add_token(t_token **head, t_token *current, enum e_token_type type,
-		char *value)
+void	add_token(t_token **head, t_token *current)
 {
-	t_token	*new;
+	t_token	*tmp;
 
-	new = (t_token *)malloc(sizeof(t_token) * 1);
-	if (!new)
-		fatal_error("malloc");
-	new->type = type;
-	new->value = value;
-	new->next = NULL;
 	if (!*head)
-		*head = new;
-	if (current)
-		current->next = new;
-	return (new);
+		*head = current;
+	else
+	{
+		tmp = *head;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = current;
+	}
 }
 
-// トークンを取得する
-t_token	*get_token(t_token **head, t_token *current, char *line, int *i)
+void	add_eof_token(t_token **head)
 {
-	int					start;
-	int					end;
-	char				*value;
-	enum e_token_type	type;
+	t_token	*current;
+
+	current = (t_token *)malloc(sizeof(t_token));
+	if (!current)
+		fatal_error("malloc");
+	current->type = TOKEN_EOF;
+	current->value = NULL;
+	current->next = NULL;
+	add_token(head, current);
+}
+
+char	*get_word(char *line, int *i)
+{
+	int		start;
+	int		end;
+	char	quote_flag;
+	char	*value;
+	char	*tmp;
 
 	start = *i;
-	while (line[*i] && line[*i] != ' ' && line[*i] != '\t' && line[*i] != '\n'
-		&& line[*i] != '|' && line[*i] != '<' && line[*i] != '>')
+	quote_flag = validate_quote(line, i, &start, &end);
+	if (!quote_flag)
 	{
-		check_quotation(line, i, &start, &end);
-		(*i)++;
+		while (!check_symbol(line, *i) && !check_quote(line, *i))
+			end = ++(*i);
 	}
-	type = check_token_type(line, i);
-	if (type == TOKEN_PIPE || type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT
-		|| type == TOKEN_REDIR_APPEND)
-		end = *i;
-	value = (char *)ft_calloc(end - start + 1, sizeof(char));
+	value = ft_substr(line, start, end - start);
 	if (!value)
-		fatal_error("malloc");
-	ft_strlcpy(value, line + start, end - start + 1);
-	return (add_token(head, current, type, value));
+		fatal_error("ft_substr");
+	if (!check_symbol(line, *i))
+	{
+		tmp = ft_strjoin(value, get_word(line, i));
+		if (!tmp)
+			fatal_error("ft_strjoin");
+		free(value);
+		value = tmp;
+	}
+	return (value);
 }
 
-//　トークナイズする
+char	*get_symbol(char *line, int *i, t_token_type type)
+{
+	char	*value;
+
+	if (type == TOKEN_PIPE || type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT)
+	{
+		value = (char *)malloc(sizeof(char) * 2);
+		if (!value)
+			fatal_error("malloc");
+		value[0] = line[(*i)++];
+		value[1] = '\0';
+		return (value);
+	}
+	value = (char *)malloc(sizeof(char) * 3);
+	if (!value)
+		fatal_error("malloc");
+	value[0] = line[(*i)++];
+	value[1] = line[(*i)++];
+	value[2] = '\0';
+	return (value);
+}
+
+t_token	*get_token(char *line, int *i)
+{
+	char				*value;
+	enum e_token_type	type;
+	t_token				*new_token;
+
+	type = check_token_type(line, *i);
+	if (type == TOKEN_WORD)
+		value = get_word(line, i);
+	else
+		value = get_symbol(line, i, type);
+	new_token = (t_token *)malloc(sizeof(t_token));
+	if (!new_token)
+		fatal_error("malloc");
+	new_token->type = type;
+	new_token->value = value;
+	new_token->next = NULL;
+	return (new_token);
+}
+
 t_token	*tokenize(char *line)
 {
 	t_token	*head;
@@ -128,8 +186,9 @@ t_token	*tokenize(char *line)
 	{
 		while (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
 			i++;
-		current = get_token(&head, current, line, &i);
+		current = get_token(line, &i);
+		add_token(&head, current);
 	}
-	add_token(&head, current, TOKEN_EOF, NULL);
+	add_eof_token(&head);
 	return (head);
 }
