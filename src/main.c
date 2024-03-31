@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/03/31 02:53:31 by sasano           ###   ########.fr       */
+/*   Updated: 2024/04/01 04:17:01 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,21 @@ char	**tokens_to_argv(t_token *tokens)
 	return (argv);
 }
 
-int	exec(char *argv[])
+int	exec_cmd(t_node *node)
 {
 	extern char	**environ;
 	const char	*path;
 	pid_t		pid;
 	int			wstatus;
+	char		**argv;
 
-	path = argv[0];
 	pid = fork();
 	if (pid < 0)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
-		// child process
+		argv = tokens_to_argv(node->args);
+		path = argv[0];
 		if (path[0] != '/' && path[0] != '.')
 			path = search_path(argv[0]);
 		validate_path(path, argv[0]);
@@ -98,30 +99,40 @@ int	exec(char *argv[])
 	}
 	else
 	{
-		// parent process
 		wait(&wstatus);
 		return (WEXITSTATUS(wstatus));
 	}
+}
+
+int	exec(t_node *node)
+{
+	int	status;
+
+	open_redir_file(node->redirects);
+	redirect(node->redirects);
+	status = exec_cmd(node);
+	reset_redirect(node->redirects);
+	return (status);
 }
 
 void	interpret(char *line, int *status)
 {
 	t_token	*tokens;
 	t_node	*node;
-	char	**argv;
 
 	tokens = tokenize(line);
 	if (tokens->type == TOKEN_EOF)
 		;
-	else if (syntax_error == true)
+	else if (g_syntax_error)
 		*status = 2;
 	else
 	{
 		node = parse(tokens);
-		argv = tokens_to_argv(node->args);
-		*status = exec(argv);
-		free(argv);
-		free(node);
+		if (g_syntax_error)
+			*status = 2;
+		else
+			*status = exec(node);
+		free_node(node);
 	}
 	free_tokens(tokens);
 }

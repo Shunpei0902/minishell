@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 08:59:25 by sasano            #+#    #+#             */
-/*   Updated: 2024/03/29 09:45:39 by sasano           ###   ########.fr       */
+/*   Updated: 2024/03/31 22:52:59 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	free_tokens(t_token *tokens)
 
 void	free_argv(char **argv)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (argv[i] != NULL)
@@ -36,4 +36,15 @@ void	free_argv(char **argv)
 		i++;
 	}
 	free(argv);
+}
+
+void	free_node(t_node *node)
+{
+	if (node == NULL)
+		return ;
+	free_tokens(node->args);
+	free_tokens(node->filename);
+	free_node(node->redirects);
+	free_node(node->next);
+	free(node);
 }

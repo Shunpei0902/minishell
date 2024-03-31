@@ -6,22 +6,33 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 18:34:54 by sasano            #+#    #+#             */
-/*   Updated: 2024/03/31 08:47:24 by sasano           ###   ########.fr       */
+/*   Updated: 2024/04/01 04:14:14 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_node_type	check_redirect(t_token *token)
+{
+	if (token->type == TOKEN_REDIR_IN)
+		return (NODE_REDIR_IN);
+	else if (token->type == TOKEN_REDIR_OUT)
+		return (NODE_REDIR_OUT);
+	else if (token->type == TOKEN_REDIR_APPEND)
+		return (NODE_REDIR_APPEND);
+	else if (token->type == TOKEN_REDIR_HEREDOC)
+		return (NODE_REDIR_HEREDOC);
+	return (NODE_COMMAND);
+}
+
 t_node	*new_node(t_node_type type)
 {
 	t_node	*node;
 
-	node = (t_node *)malloc(sizeof(t_node));
-	// node = ft_calloc(1, sizeof(t_node));
+	node = ft_calloc(1, sizeof(t_node));
 	if (node == NULL)
-		fatal_error("malloc");
+		fatal_error("ft_calloc");
 	node->type = type;
-	node->next = NULL;
 	return (node);
 }
 
@@ -29,14 +40,13 @@ t_token	*tokdup(t_token *token)
 {
 	t_token	*new_token;
 
-	new_token = (t_token *)malloc(sizeof(t_token));
+	new_token = ft_calloc(1, sizeof(t_token));
 	if (new_token == NULL)
-		fatal_error("malloc");
+		fatal_error("ft_calloc");
 	new_token->type = token->type;
 	new_token->value = ft_strdup(token->value);
 	if (new_token->value == NULL)
 		fatal_error("ft_strdup");
-	new_token->next = NULL;
 	return (new_token);
 }
 
@@ -50,6 +60,34 @@ void	append_tokens(t_token **tokens, t_token *token)
 	return (append_tokens(&(*tokens)->next, token));
 }
 
+void	append_redirects(t_node **redirects, t_token *token, t_token *filename)
+{
+	t_node		*node;
+	t_node		*tmp;
+	t_node_type	type;
+
+	type = check_redirect(token);
+	node = new_node(type);
+	node->filename = filename;
+	if (type == NODE_REDIR_IN || type == NODE_REDIR_HEREDOC)
+		node->targetfd = STDIN_FILENO;
+	else if (type == NODE_REDIR_OUT || type == NODE_REDIR_APPEND)
+		node->targetfd = STDOUT_FILENO;
+	if (*redirects == NULL)
+	{
+		*redirects = node;
+		return ;
+	}
+	tmp = *redirects;
+	while (tmp->next != NULL)
+	{
+		tmp = tmp->next;
+		if (tmp->next == NULL)
+			break ;
+	}
+	tmp->next = node;
+}
+
 t_node	*parse(t_token *tokens)
 {
 	t_node *node;
@@ -59,8 +97,13 @@ t_node	*parse(t_token *tokens)
 	{
 		if (tokens->type == TOKEN_WORD)
 			append_tokens(&node->args, tokdup(tokens));
+		else if (check_redirect(tokens))
+		{
+			append_redirects(&node->redirects, tokens, tokdup(tokens->next));
+			tokens = tokens->next;
+		}
 		else
-			fatal_error("parse error");
+			parse_error("parse error", &tokens);
 		tokens = tokens->next;
 	}
 	return (node);

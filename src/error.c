@@ -6,13 +6,13 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 13:53:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/03/29 18:49:10 by sasano           ###   ########.fr       */
+/*   Updated: 2024/03/31 10:49:45 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	syntax_error = false;
+bool	g_syntax_error = false;
 
 void	fatal_error(const char *msg)
 {
@@ -34,8 +34,16 @@ void	err_exit(const char *location, const char *msg, int status)
 
 void	tokenize_error(const char *location, char *line)
 {
-	syntax_error = true;
+	g_syntax_error = true;
 	dprintf(STDERR_FILENO, "Syntax Error: %s\n", location);
 	while (*line)
 		line++;
+}
+
+void	parse_error(const char *location, t_token **tokens)
+{
+	g_syntax_error = true;
+	dprintf(STDERR_FILENO, "Syntax Error: %s\n", location);
+	while (*tokens != NULL && (*tokens)->type != TOKEN_EOF)
+		*tokens = (*tokens)->next;
 }

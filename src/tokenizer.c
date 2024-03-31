@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 03:52:14 by sasano            #+#    #+#             */
-/*   Updated: 2024/03/31 10:00:01 by sasano           ###   ########.fr       */
+/*   Updated: 2024/04/01 03:40:44 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ enum e_token_type	check_token_type(char *line, int i)
 	{
 		i++;
 		if (line[i] == '<')
-			return (TOKEN_REDIR_APPEND);
+			return (TOKEN_REDIR_HEREDOC);
 		return (TOKEN_REDIR_IN);
 	}
 	else if (line[i] == '>')
@@ -92,12 +92,10 @@ void	add_eof_token(t_token **head)
 {
 	t_token	*current;
 
-	current = (t_token *)malloc(sizeof(t_token));
+	current = ft_calloc(1, sizeof(t_token));
 	if (!current)
-		fatal_error("malloc");
+		fatal_error("ft_calloc");
 	current->type = TOKEN_EOF;
-	current->value = NULL;
-	current->next = NULL;
 	add_token(head, current);
 }
 
@@ -136,19 +134,17 @@ char	*get_symbol(char *line, int *i, t_token_type type)
 
 	if (type == TOKEN_PIPE || type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT)
 	{
-		value = (char *)malloc(sizeof(char) * 2);
+		value = ft_calloc(2, sizeof(char));
 		if (!value)
-			fatal_error("malloc");
+			fatal_error("ft_calloc");
 		value[0] = line[(*i)++];
-		value[1] = '\0';
 		return (value);
 	}
-	value = (char *)malloc(sizeof(char) * 3);
+	value = ft_calloc(3, sizeof(char));
 	if (!value)
-		fatal_error("malloc");
+		fatal_error("ft_calloc");
 	value[0] = line[(*i)++];
 	value[1] = line[(*i)++];
-	value[2] = '\0';
 	return (value);
 }
 
@@ -163,12 +159,11 @@ t_token	*get_token(char *line, int *i)
 		value = get_word(line, i);
 	else
 		value = get_symbol(line, i, type);
-	new_token = (t_token *)malloc(sizeof(t_token));
+	new_token = ft_calloc(1, sizeof(t_token));
 	if (!new_token)
-		fatal_error("malloc");
+		fatal_error("ft_calloc");
 	new_token->type = type;
 	new_token->value = value;
-	new_token->next = NULL;
 	return (new_token);
 }
 
@@ -180,7 +175,7 @@ t_token	*tokenize(char *line)
 
 	current = NULL;
 	head = NULL;
-	syntax_error = false;
+	// g_syntax_error = false;
 	i = 0;
 	while (line[i])
 	{
