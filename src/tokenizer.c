@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 03:52:14 by sasano            #+#    #+#             */
-/*   Updated: 2024/04/01 03:40:44 by sasano           ###   ########.fr       */
+/*   Updated: 2024/04/01 15:00:47 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,8 @@ t_token	*tokenize(char *line)
 	{
 		while (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
 			i++;
+		if (!line[i])
+			break ;
 		current = get_token(line, &i);
 		add_token(&head, current);
 	}

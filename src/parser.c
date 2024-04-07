@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 18:34:54 by sasano            #+#    #+#             */
-/*   Updated: 2024/04/01 04:14:14 by sasano           ###   ########.fr       */
+/*   Updated: 2024/04/07 14:54:38 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ t_node_type	check_redirect(t_token *token)
 	return (NODE_COMMAND);
 }
 
+bool	check_pipe(t_token *token)
+{
+	if (token == NULL)
+		return (true);
+	if (token->type != TOKEN_WORD)
+		return (true);
+	return (false);
+}
+
 t_node	*new_node(t_node_type type)
 {
 	t_node	*node;
@@ -33,6 +42,13 @@ t_node	*new_node(t_node_type type)
 	if (node == NULL)
 		fatal_error("ft_calloc");
 	node->type = type;
+	if (type == NODE_COMMAND)
+	{
+		node->inpipe[0] = STDIN_FILENO;
+		node->inpipe[1] = -1;
+		node->outpipe[0] = -1;
+		node->outpipe[1] = STDOUT_FILENO;
+	}
 	return (node);
 }
 
@@ -101,6 +117,11 @@ t_node	*parse(t_token *tokens)
 		{
 			append_redirects(&node->redirects, tokens, tokdup(tokens->next));
 			tokens = tokens->next;
+		}
+		else if (tokens->type == TOKEN_PIPE && !check_pipe(tokens->next))
+		{	
+			node->next = parse(tokens->next);
+			break ;
 		}
 		else
 			parse_error("parse error", &tokens);

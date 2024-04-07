@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/04/01 04:17:01 by sasano           ###   ########.fr       */
+/*   Updated: 2024/04/07 14:36:12 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,42 +76,68 @@ char	**tokens_to_argv(t_token *tokens)
 	return (argv);
 }
 
-int	exec_cmd(t_node *node)
+int wait_pipe(pid_t last_pid)
+{
+	pid_t wait_pid;
+	int wstatus;
+	int status;
+
+	while (1)
+	{
+		wait_pid = wait(&wstatus);
+		if (wait_pid == last_pid)
+			status = WEXITSTATUS(wstatus);
+		if (wait_pid < 0)
+		{
+			if (errno == ECHILD)
+				break ;
+			fatal_error("wait");
+		}
+	}
+	return (status);
+}
+
+pid_t	exec_pipe(t_node *node)
 {
 	extern char	**environ;
 	const char	*path;
 	pid_t		pid;
-	int			wstatus;
 	char		**argv;
 
+	prepare_pipe(node);
 	pid = fork();
 	if (pid < 0)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
+		pipe_child(node);
+		redirect(node->redirects);
 		argv = tokens_to_argv(node->args);
 		path = argv[0];
 		if (path[0] != '/' && path[0] != '.')
 			path = search_path(argv[0]);
 		validate_path(path, argv[0]);
 		execve(path, argv, environ);
+		reset_redirect(node->redirects);
 		fatal_error("execve");
 	}
 	else
 	{
-		wait(&wstatus);
-		return (WEXITSTATUS(wstatus));
+		pipe_parent(node);
+		if (node->next)
+			return (exec_pipe(node->next));
+		return (pid);
 	}
 }
 
 int	exec(t_node *node)
 {
 	int	status;
+	pid_t last_pid;
 
 	open_redir_file(node->redirects);
-	redirect(node->redirects);
-	status = exec_cmd(node);
-	reset_redirect(node->redirects);
+	last_pid = exec_pipe(node);
+	status = wait_pipe(last_pid);
 	return (status);
 }
 

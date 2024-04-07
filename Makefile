@@ -1,19 +1,15 @@
 NAME := minishell
 
+LIBFT = ./libft
 SDIR := src/
 ODIR := obj/
 IDIR := inc/
-LDIR = $(RLDIR)/lib
-LINC = $(RLDIR)/include
-SRCS := $(SDIR)/*.c
+SRCS := error.c free.c main.c parser.c redirect.c tokenizer.c pipe.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
-INCS = -I$(IDIR) -I$(LINC)
+INCS = -DREADLINE_LIBRARY -I$(IDIR) -I$(LINC) -I$(LIBFT)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP
-LDFLAGS := -lhistory -lreadline
-RLDIR =`brew --prefix readline`
-LIBFT_DIR = ./libft
-LIBFT_LIB = $(LIBFT_DIR)/libft.a
+LDFLAGS := -lreadline -L$(LIBFT) -lft
 CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS)
 CC := cc
 MKDIR := mkdir -p
@@ -37,28 +33,28 @@ ifeq ($(OS), Darwin)
 	CFLAGS += -D__Apple__
 endif
 
-all: $(NAME) $(LIBFT_LIB)
+$(NAME): ft
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
-$(NAME): $(SRCS) $(LIBFT_LIB)
-	$(CC)  $(CFLAGS) -o $(NAME) $(LIBFT_LIB) $^ $(INCS) -L$(LDIR) $(LDFLAGS) 
-
-# $(NAME): $(OBJS) | $(ODIR)
-# 	$(CC)  $(CFLAGS) -o $(NAME) $^ -L$(LDIR) $(LDFLAGS)
+ft: $(OBJS)
+	@echo "compiling libft"
+	@make -C $(LIBFT)
 
 $(ODIR)%.o:$(SDIR)%.c | $(ODIR)
-	$(CC) $(CFLAGS) $(INCS) -o $@ -c $< $(LDFLAGS)
+	$(CC) $(CFLAGS) $(INCS) -o $@ -c $<
 
 $(ODIR):
 	@echo "Creating directory: $(ODIR)"
 	$(MKDIR) $@
 
-$(LIBFT_LIB):
-	@make -C $(LIBFT_DIR)
+all: $(NAME) ft 
 
 clean:
+	@make $@ -C $(LIBFT)
 	rm -rf $(ODIR)
 
 fclean: clean
+	@make $@ -C $(LIBFT)
 	rm -f $(NAME)
 	rm -rf $(NAME).dSYM
 

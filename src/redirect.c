@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:59:37 by sasano            #+#    #+#             */
-/*   Updated: 2024/04/01 04:15:11 by sasano           ###   ########.fr       */
+/*   Updated: 2024/04/06 15:53:47 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	read_heredoc(const char *delimiter)
 		line = readline("heredoc> ");
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, delimiter, ft_strlen(line)) == 0)
+		if (ft_strncmp(line, delimiter, ft_strlen(line)) == 0 && *line != '\0')
 		{
 			free(line);
 			break ;
@@ -79,6 +79,8 @@ void	redirect(t_node *node)
 	node->stashed_targetfd = stash_fd(node->targetfd);
 	if (dup2(node->filefd, node->targetfd) == -1)
 		fatal_error("dup2");
+	printf("node->filename: %s\n", node->filename->value);
+	printf("node->filefd: %d\n", node->filefd);
 	redirect(node->next);
 }
 

@@ -11,21 +11,21 @@ OBJS += $(BOJS)
 endif
 
 $(NAME): $(OBJS)
-		ar rc $(NAME) $(OBJS)
+	ar rcs $(NAME) $(OBJS)
 
 %.o: %.c
-		$(CC) $(CFLAGS) -c $< -o $@ 
+	$(CC) $(CFLAGS) -c $< -o $@ 
 
 all:	$(NAME)
 
 bonus:
-		@make WITH_BONUS=1
+	@make WITH_BONUS=1
 
 clean:
-		rm -f $(OBJS) $(BOJS)
+	rm -f $(OBJS) $(BOJS)
 
 fclean:	clean
-		rm -f $(NAME)
+	rm -f $(NAME)
 
 re:	fclean all
 

@@ -8,6 +8,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <unistd.h>
+#include <errno.h>
 
 // GNU readline uses FILE data type, part of stdio.h
 # include <stdio.h>
@@ -59,6 +60,8 @@ typedef struct s_node
 	int				filefd;
 	int				targetfd;
 	int				stashed_targetfd;
+	int inpipe[2];
+	int outpipe[2];
 }					t_node;
 
 extern bool			g_syntax_error;
@@ -76,5 +79,9 @@ void				open_redir_file(t_node *node);
 void				redirect(t_node *node);
 void				reset_redirect(t_node *node);
 int					read_heredoc(const char *delimiter);
+void				prepare_pipe(t_node *node);
+void 				pipe_parent(t_node *node);
+void 				pipe_child(t_node *node);
+
 
 #endif
