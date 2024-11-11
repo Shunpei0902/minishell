@@ -1,16 +1,15 @@
 NAME := minishell
 
+LIBFT = ./libft
 SDIR := src/
 ODIR := obj/
 IDIR := inc/
-LDIR := ext/lib/
-LINC := ext/include/readline
-SRCS := main.c 
+SRCS := error.c free.c main.c parser.c redirect.c tokenizer.c pipe.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
-INCS = -I$(IDIR) -I$(LINC)
+INCS = -DREADLINE_LIBRARY -I$(IDIR) -I$(LINC) -I$(LIBFT)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP
-LDFLAGS := -L$(LDIR) -lhistory -L$(LDIR) -lreadline -DREADLINE_LIBRARY
+LDFLAGS := -lreadline -L$(LIBFT) -lft
 CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS)
 CC := cc
 MKDIR := mkdir -p
@@ -34,10 +33,12 @@ ifeq ($(OS), Darwin)
 	CFLAGS += -D__Apple__
 endif
 
-all: $(NAME)
+$(NAME): ft
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
-$(NAME): $(OBJS) | $(ODIR)
-	$(CC) $(CFLAGS) -o $(NAME) $^ $(LDFLAGS)
+ft: $(OBJS)
+	@echo "compiling libft"
+	@make -C $(LIBFT)
 
 $(ODIR)%.o:$(SDIR)%.c | $(ODIR)
 	$(CC) $(CFLAGS) $(INCS) -o $@ -c $<
@@ -46,10 +47,14 @@ $(ODIR):
 	@echo "Creating directory: $(ODIR)"
 	$(MKDIR) $@
 
+all: $(NAME) ft 
+
 clean:
+	@make $@ -C $(LIBFT)
 	rm -rf $(ODIR)
 
 fclean: clean
+	@make $@ -C $(LIBFT)
 	rm -f $(NAME)
 	rm -rf $(NAME).dSYM
 
