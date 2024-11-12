@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 03:52:14 by sasano            #+#    #+#             */
-/*   Updated: 2024/04/01 15:00:47 by sasano           ###   ########.fr       */
+/*   Updated: 2024/11/12 19:20:52 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ enum e_token_type	check_token_type(char *line, int i)
 	return (TOKEN_WORD);
 }
 
-char	validate_quote(char *line, int *i, int *start, int *end)
+// クォーテーションを取り除く処理はexpand.cに移動
+static char	validate_quote(char *line, int *i, int *start, int *end)
 {
 	char	quote_flag;
 
@@ -54,19 +55,20 @@ char	validate_quote(char *line, int *i, int *start, int *end)
 	{
 		quote_flag = line[*i];
 		(*i)++;
-		*start = *i;
+		// *start = *i;
 	}
-	while (quote_flag)
+	while (quote_flag && g_syntax_error == false)
 	{
 		if (line[*i] == '\0' || line[*i] == '\n')
 		{
-			tokenize_error(&(line[*start]), line);
-			break ;
+			tokenize_error(&(line[*start]), &line);
+			(*i)++;
+			return (quote_flag);
 		}
 		if (line[*i] == quote_flag)
 		{
-			*end = *i;
-			(*i)++;
+			*end = ++(*i);
+			// (*i)++;
 			return (quote_flag);
 		}
 		(*i)++;
@@ -93,11 +95,10 @@ void	add_eof_token(t_token **head)
 	t_token	*current;
 
 	current = ft_calloc(1, sizeof(t_token));
-	if (!current)
-		fatal_error("ft_calloc");
 	current->type = TOKEN_EOF;
 	add_token(head, current);
 }
+
 
 char	*get_word(char *line, int *i)
 {
@@ -108,47 +109,41 @@ char	*get_word(char *line, int *i)
 	char	*tmp;
 
 	start = *i;
+	// クォーテーションがあったらここで処理
 	quote_flag = validate_quote(line, i, &start, &end);
+	// なかった場合の処理
 	if (!quote_flag)
 	{
 		while (!check_symbol(line, *i) && !check_quote(line, *i))
 			end = ++(*i);
 	}
 	value = ft_substr(line, start, end - start);
-	if (!value)
-		fatal_error("ft_substr");
 	if (!check_symbol(line, *i))
 	{
 		tmp = ft_strjoin(value, get_word(line, i));
-		if (!tmp)
-			fatal_error("ft_strjoin");
 		free(value);
 		value = tmp;
 	}
 	return (value);
 }
 
-char	*get_symbol(char *line, int *i, t_token_type type)
+static char	*get_symbol(char *line, int *i, t_token_type type)
 {
 	char	*value;
 
 	if (type == TOKEN_PIPE || type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT)
 	{
 		value = ft_calloc(2, sizeof(char));
-		if (!value)
-			fatal_error("ft_calloc");
 		value[0] = line[(*i)++];
 		return (value);
 	}
 	value = ft_calloc(3, sizeof(char));
-	if (!value)
-		fatal_error("ft_calloc");
 	value[0] = line[(*i)++];
 	value[1] = line[(*i)++];
 	return (value);
 }
 
-t_token	*get_token(char *line, int *i)
+static t_token	*get_token(char *line, int *i)
 {
 	char				*value;
 	enum e_token_type	type;
@@ -160,8 +155,6 @@ t_token	*get_token(char *line, int *i)
 	else
 		value = get_symbol(line, i, type);
 	new_token = ft_calloc(1, sizeof(t_token));
-	if (!new_token)
-		fatal_error("ft_calloc");
 	new_token->type = type;
 	new_token->value = value;
 	return (new_token);
@@ -175,9 +168,9 @@ t_token	*tokenize(char *line)
 
 	current = NULL;
 	head = NULL;
-	// g_syntax_error = false;
+	g_syntax_error = false;
 	i = 0;
-	while (line[i])
+	while (line[i] && g_syntax_error == false)
 	{
 		while (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
 			i++;

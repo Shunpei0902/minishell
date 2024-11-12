@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/04/07 14:36:12 by sasano           ###   ########.fr       */
+/*   Updated: 2024/11/12 19:19:25 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ void	interpret(char *line, int *status)
 	t_node	*node;
 
 	tokens = tokenize(line);
+	expand(tokens);
 	if (tokens->type == TOKEN_EOF)
 		;
 	else if (g_syntax_error)
