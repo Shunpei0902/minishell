@@ -33,11 +33,12 @@ ifeq ($(OS), Darwin)
 	CFLAGS += -D__Apple__
 endif
 
-$(NAME): ft
+all: $(NAME)
+
+$(NAME): $(OBJS) | ft
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
-ft: $(OBJS)
-	@echo "compiling libft"
+ft: $(OBJS) | $(ODIR)
 	@make -C $(LIBFT)
 
 $(ODIR)%.o:$(SDIR)%.c | $(ODIR)
@@ -46,8 +47,6 @@ $(ODIR)%.o:$(SDIR)%.c | $(ODIR)
 $(ODIR):
 	@echo "Creating directory: $(ODIR)"
 	$(MKDIR) $@
-
-all: $(NAME) ft 
 
 clean:
 	@make $@ -C $(LIBFT)
