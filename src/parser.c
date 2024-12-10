@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 18:34:54 by sasano            #+#    #+#             */
-/*   Updated: 2024/04/07 14:54:38 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/07 02:15:22 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,17 @@ t_token	*tokdup(t_token *token)
 	new_token->type = token->type;
 	new_token->value = ft_strdup(token->value);
 	if (new_token->value == NULL)
-		fatal_error("ft_strdup");
+	{
+		free(new_token);
+		return (NULL);
+	}
 	return (new_token);
 }
 
 void	append_tokens(t_token **tokens, t_token *token)
 {
+	if (token == NULL)
+		return ;
 	if (*tokens == NULL)
 	{
 		*tokens = token;
@@ -119,7 +124,7 @@ t_node	*parse(t_token *tokens)
 			tokens = tokens->next;
 		}
 		else if (tokens->type == TOKEN_PIPE && !check_pipe(tokens->next))
-		{	
+		{
 			node->next = parse(tokens->next);
 			break ;
 		}

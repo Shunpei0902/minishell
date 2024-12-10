@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 20:11:28 by sasano            #+#    #+#             */
-/*   Updated: 2023/10/29 13:58:32 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/06 21:27:28 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(char const *src)
 	char	*p;
 	char	*cpy;
 
+	if (!src)
+		return (NULL);
 	i = 0;
 	while (src[i] != '\0')
 		i++;
