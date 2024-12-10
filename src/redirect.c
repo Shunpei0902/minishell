@@ -6,29 +6,70 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:59:37 by sasano            #+#    #+#             */
-/*   Updated: 2024/04/06 15:53:47 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/10 12:31:45 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	read_heredoc(const char *delimiter)
+void	expand_delimiter(char **delimiter, int *flag)
+{
+	int		i;
+	char	*tmp;
+
+	i = -1;
+	*flag = 0;
+	tmp = *delimiter;
+	while (tmp[++i])
+	{
+		if (tmp[i] == '\"' || tmp[i] == '\'')
+		{
+			*flag = 1;
+			break ;
+		}
+	}
+	i = 0;
+	*delimiter = quote_expand(*delimiter, &i);
+	free(tmp);
+}
+
+void	expand_heredoc(char **line, int flag)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	if (!*line || **line == '\0' || **line == '\n')
+		return ;
+	if (!flag)
+	{
+		tmp = *line;
+		*line = param_expand(*line, &i);
+		free(tmp);
+	}
+}
+
+int	read_heredoc(char *delimiter)
 {
 	int		fd[2];
+	int		flag;
 	char	*line;
 
 	if (pipe(fd) < 0)
 		fatal_error("pipe");
+	expand_delimiter(&delimiter, &flag);
 	while (1)
 	{
 		line = readline("heredoc> ");
 		if (line == NULL)
 			break ;
-		if (ft_strncmp(line, delimiter, ft_strlen(line)) == 0 && *line != '\0')
+		if ((ft_strncmp(line, delimiter, ft_strlen(line)) == 0 && *line != '\0')
+			|| (*line == '\n' && !delimiter))
 		{
 			free(line);
 			break ;
 		}
+		expand_heredoc(&line, flag);
 		write(fd[1], line, ft_strlen(line));
 		write(fd[1], "\n", 1);
 		free(line);
@@ -79,8 +120,6 @@ void	redirect(t_node *node)
 	node->stashed_targetfd = stash_fd(node->targetfd);
 	if (dup2(node->filefd, node->targetfd) == -1)
 		fatal_error("dup2");
-	printf("node->filename: %s\n", node->filename->value);
-	printf("node->filefd: %d\n", node->filefd);
 	redirect(node->next);
 }
 

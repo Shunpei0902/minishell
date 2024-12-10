@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 03:52:14 by sasano            #+#    #+#             */
-/*   Updated: 2024/11/12 19:20:52 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/06 13:04:19 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ void	add_eof_token(t_token **head)
 	add_token(head, current);
 }
 
-
 char	*get_word(char *line, int *i)
 {
 	int		start;
@@ -108,6 +107,8 @@ char	*get_word(char *line, int *i)
 	char	*value;
 	char	*tmp;
 
+	if (!line)
+		return (NULL);
 	start = *i;
 	// クォーテーションがあったらここで処理
 	quote_flag = validate_quote(line, i, &start, &end);
