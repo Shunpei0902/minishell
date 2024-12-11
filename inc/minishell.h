@@ -83,5 +83,21 @@ void				prepare_pipe(t_node *node);
 void 				pipe_parent(t_node *node);
 void 				pipe_child(t_node *node);
 
+extern char	**environ;
+
+int			b_echo(char **av);
+int			b_cd(char **av);
+// int	b_pwd(void);
+int			b_pwd(char **av);
+int			b_export(char **av);
+int			b_unset(char **av);
+// int	b_env(void);
+int			b_env(char **av);
+int			b_exit(char **av);
+
+typedef int	(*t_function)(char **);
+int			is_builtin(char *cmd);
+int			exec_builtin(int i, char **cmd);
+void		update_environ(void);
 
 #endif
