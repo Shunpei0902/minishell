@@ -20,8 +20,9 @@ bool	check_quote(char *line, int i)
 bool	check_symbol(char *line, int i)
 {
 	return (!line[i] || line[i] == '\n' || line[i] == ' ' || line[i] == '\t'
-		|| line[i] == '\n' || line[i] == '|' || line[i] == '<' || line[i] == '>'
-		|| line[i] == ' ' || line[i] == '\t' || line[i] == '\n');
+		|| line[i] == '\n' || line[i] == '|' || line[i] == '<'
+		|| line[i] == '>' || line[i] == ' ' || line[i] == '\t'
+		|| line[i] == '\n');
 }
 
 enum e_token_type	check_token_type(char *line, int i)
@@ -73,6 +74,7 @@ char	validate_quote(char *line, int *i, int *start, int *end)
 	}
 	return (quote_flag);
 }
+
 void	add_token(t_token **head, t_token *current)
 {
 	t_token	*tmp;

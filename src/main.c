@@ -76,11 +76,11 @@ char	**tokens_to_argv(t_token *tokens)
 	return (argv);
 }
 
-int wait_pipe(pid_t last_pid)
+int	wait_pipe(pid_t last_pid)
 {
-	pid_t wait_pid;
-	int wstatus;
-	int status;
+	pid_t	wait_pid;
+	int		wstatus;
+	int		status;
 
 	while (1)
 	{
@@ -132,8 +132,8 @@ pid_t	exec_pipe(t_node *node)
 
 int	exec(t_node *node)
 {
-	int	status;
-	pid_t last_pid;
+	int		status;
+	pid_t	last_pid;
 
 	open_redir_file(node->redirects);
 	last_pid = exec_pipe(node);
@@ -165,8 +165,8 @@ void	interpret(char *line, int *status)
 
 int	main(void)
 {
-	int status;
-	char *line;
+	int		status;
+	char	*line;
 
 	rl_outstream = stderr;
 	status = 0;

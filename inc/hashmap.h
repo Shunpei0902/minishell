@@ -15,16 +15,16 @@
 # define BUILT_IN_COUNT 7
 # define TABLESIZE 100
 
-typedef struct node
+typedef struct bucket
 {
 	char			*key;
 	char			*value;
-	struct node		*next;
-}					t_node;
+	struct bucket	*next;
+}					t_bucket;
 
 typedef struct hashmap
 {
-	t_node			*entries[TABLESIZE];
+	t_bucket		*entries[TABLESIZE];
 	unsigned int	var_count;
 }					t_hashmap;
 

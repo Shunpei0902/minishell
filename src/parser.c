@@ -106,7 +106,7 @@ void	append_redirects(t_node **redirects, t_token *token, t_token *filename)
 
 t_node	*parse(t_token *tokens)
 {
-	t_node *node;
+	t_node	*node;
 
 	node = new_node(NODE_COMMAND);
 	while (tokens != NULL && tokens->type != TOKEN_EOF)
@@ -119,7 +119,7 @@ t_node	*parse(t_token *tokens)
 			tokens = tokens->next;
 		}
 		else if (tokens->type == TOKEN_PIPE && !check_pipe(tokens->next))
-		{	
+		{
 			node->next = parse(tokens->next);
 			break ;
 		}

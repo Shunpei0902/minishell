@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:33:54 by naokiiida         #+#    #+#             */
-/*   Updated: 2024/12/09 17:34:03 by naokiiida        ###   ########.fr       */
+/*   Updated: 2024/12/11 16:11:30 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	b_echo(char **av)
 	bool	op_newline;
 
 	if (!av)
-	   return (-1);
+		return (-1);
 	op_newline = true;
 	if (*++av && ft_strncmp("-n", *av, 2) == 0)
 	{

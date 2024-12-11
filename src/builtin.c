@@ -6,7 +6,7 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 13:34:36 by niida             #+#    #+#             */
-/*   Updated: 2024/12/09 17:44:45 by naokiiida        ###   ########.fr       */
+/*   Updated: 2024/12/11 16:54:50 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 #include "libft.h"
 #include "minishell.h"
 
-typedef int	(*t_function)(char **);
-
 int	is_builtin(char *cmd)
 {
-	int			i;
 	static char	*builtin[BUILT_IN_COUNT] = {
 		"echo",
 		"cd",
@@ -28,6 +25,7 @@ int	is_builtin(char *cmd)
 		"env",
 		"exit",
 	};
+	int			i;
 
 	i = BUILT_IN_COUNT;
 	while (--i >= 0)
@@ -51,44 +49,3 @@ int	exec_builtin(int i, char **cmd)
 	run[i](cmd);
 	return (0);
 }
-
-// int	main(void)
-// {
-// 	char *commands[][4] = {
-// 	{"echo", "-n", "is here", NULL},
-// 	{"echo", "word=TEST", "is here", NULL},
-// 	{"echo", "\"word=TEST\"", "is here", NULL},
-// 	{"echo", "'word=TEST'", "is here", NULL},
-// 	{"cd", NULL},
-// 	{"pwd", NULL},
-// 	{"cd", "/usr/local/bin", "asdfasdf", NULL},
-// 	{"pwd", NULL},
-// 	{"cd", "..", NULL},
-// 	{"pwd", NULL},
-// 	{"export", NULL},
-// 	{"unset", NULL},
-// 	{"env", NULL},
-// 	{"exit", NULL},
-// 	{"exit", "1", NULL},
-// 	{NULL}
-// 	};
-// 	int i;
-// 	int j;
-// 	int k;
-
-// 	printf("run...\n");
-// 	for (i = 0; commands[i][0] != NULL; i++)
-// 	{
-// 		printf("\nTesting command: ");
-// 		for (k = 0; commands[i][k] != NULL; k++)
-// 		{
-// 			printf("%s ", commands[i][k]);
-// 		}
-// 		j = is_builtin(commands[i][0]);
-// 		if (j >= 0)
-// 			exec_builtin(j, commands[i]);
-// 		else
-// 			printf("%s not found\n", commands[i][0]);
-// 	}
-// 	return (0);
-// }

@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/11 17:13:35 by niida             #+#    #+#             */
+/*   Updated: 2024/12/11 17:14:00 by niida            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include "../libft/libft.h"
+# include "libft.h"
+# include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
 # include <stdbool.h>
@@ -8,7 +21,6 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <unistd.h>
-#include <errno.h>
 
 // GNU readline uses FILE data type, part of stdio.h
 # include <stdio.h>
@@ -37,7 +49,7 @@ typedef struct s_token
 	struct s_token	*next;
 }					t_token;
 
-//ノードの種類
+// ノードの種類
 typedef enum e_node_type
 {
 	NODE_COMMAND,
@@ -60,8 +72,8 @@ typedef struct s_node
 	int				filefd;
 	int				targetfd;
 	int				stashed_targetfd;
-	int inpipe[2];
-	int outpipe[2];
+	int				inpipe[2];
+	int				outpipe[2];
 }					t_node;
 
 extern bool			g_syntax_error;
@@ -80,24 +92,24 @@ void				redirect(t_node *node);
 void				reset_redirect(t_node *node);
 int					read_heredoc(const char *delimiter);
 void				prepare_pipe(t_node *node);
-void 				pipe_parent(t_node *node);
-void 				pipe_child(t_node *node);
+void				pipe_parent(t_node *node);
+void				pipe_child(t_node *node);
 
-extern char	**environ;
+extern char			**environ;
 
-int			b_echo(char **av);
-int			b_cd(char **av);
+int					b_echo(char **av);
+int					b_cd(char **av);
 // int	b_pwd(void);
-int			b_pwd(char **av);
-int			b_export(char **av);
-int			b_unset(char **av);
+int					b_pwd(char **av);
+int					b_export(char **av);
+int					b_unset(char **av);
 // int	b_env(void);
-int			b_env(char **av);
-int			b_exit(char **av);
+int					b_env(char **av);
+int					b_exit(char **av);
 
-typedef int	(*t_function)(char **);
-int			is_builtin(char *cmd);
-int			exec_builtin(int i, char **cmd);
-void		update_environ(void);
+typedef int			(*t_function)(char **);
+int					is_builtin(char *cmd);
+int					exec_builtin(int i, char **cmd);
+void				update_environ(void);
 
 #endif

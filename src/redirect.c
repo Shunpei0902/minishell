@@ -59,8 +59,8 @@ void	open_redir_file(t_node *node)
 	if (node->type == NODE_REDIR_IN)
 		node->filefd = open(node->filename->value, O_RDONLY);
 	else if (node->type == NODE_REDIR_OUT)
-		node->filefd = open(node->filename->value, O_WRONLY | O_CREAT | O_TRUNC,
-				0644);
+		node->filefd = open(node->filename->value,
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (node->type == NODE_REDIR_APPEND)
 		node->filefd = open(node->filename->value,
 				O_WRONLY | O_CREAT | O_APPEND, 0644);

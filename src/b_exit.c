@@ -6,15 +6,13 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:34:19 by naokiiida         #+#    #+#             */
-/*   Updated: 2024/12/09 17:34:20 by naokiiida        ###   ########.fr       */
+/*   Updated: 2024/12/11 16:52:05 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
 #include <signal.h>
-
-const char	*g_last_exit_status;
 
 bool	isnum(char *av)
 {
@@ -24,9 +22,6 @@ bool	isnum(char *av)
 	return (true);
 }
 
-// todo("exit status of last command executed $?");
-// printf("exit status of last command executed: %d\n",
-// WEXITSTATUS(status)); // in pipe
 int	b_exit(char **av)
 {
 	int	pid;

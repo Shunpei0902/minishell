@@ -6,18 +6,16 @@
 /*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:34:35 by naokiiida         #+#    #+#             */
-/*   Updated: 2024/12/09 21:20:26 by naokiiida        ###   ########.fr       */
+/*   Updated: 2024/12/11 16:24:42 by naokiiida        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "hashmap.h"
 #include "libft.h"
 #include "minishell.h"
-#include "hashmap.h"
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
-extern char	**environ;
 
 /**
 GETENV(3)
@@ -31,8 +29,8 @@ otherwise it is reset to the given value.
 */
 int	ft_setenv(const char *name, const char *value, int overwrite)
 {
-	int		index;
-	t_node	*curr;
+	int			index;
+	t_bucket	*curr;
 
 	index = hash(name);
 	if (!g_table)
@@ -48,7 +46,7 @@ int	ft_setenv(const char *name, const char *value, int overwrite)
 		}
 		curr = curr->next;
 	}
-	curr = malloc(sizeof(t_node));
+	curr = malloc(sizeof(t_bucket));
 	if (!curr)
 		return (-1);
 	curr->key = ft_strdup(name);
@@ -58,42 +56,38 @@ int	ft_setenv(const char *name, const char *value, int overwrite)
 	return (0);
 }
 
-t_node	*get_key_value(const char *str)
+t_bucket	*get_key_value(const char *str)
 {
-	t_node			*pair;
+	t_bucket		*pair;
 	const char		*cpy;
 	unsigned int	len;
 
 	len = 0;
 	cpy = str;
-	pair = malloc(sizeof(t_node));
+	pair = malloc(sizeof(t_bucket));
 	while (*cpy)
 	{
 		if (*cpy++ == '=')
 			break ;
 		len++;
 	}
-	pair->key = malloc(sizeof(char *) * len+1);
+	pair->key = malloc(sizeof(char *) * len + 1);
 	if (!pair->key)
 		return (NULL);
-	ft_strlcpy(pair->key, str, len+1);
+	ft_strlcpy(pair->key, str, len + 1);
 	pair->value = ft_strdup(cpy);
 	return (pair);
 }
 
-// [name[=value] ...]
-// todo: convert my hash table into char ** and newly point environ to it so
-// other subprocesses and c programs
-// int	environ_init(t_hashmap *table, const char **environ)
 int	environ_init(void)
 {
-	int		i;
-	char	**av;
-	t_node	*pair;
+	int			i;
+	char		**av;
+	t_bucket	*pair;
 
 	i = 0;
 	av = environ;
-	pair = malloc(sizeof(t_node));
+	pair = malloc(sizeof(t_bucket));
 	while (av[++i])
 	{
 		pair = get_key_value(av[i++]);
@@ -105,9 +99,9 @@ int	environ_init(void)
 
 int	b_export(char **av)
 {
-	char	**env;
-	t_node	*pair;
-	int		i;
+	char		**env;
+	t_bucket	*pair;
+	int			i;
 
 	i = 1;
 	env = environ;
@@ -122,7 +116,7 @@ int	b_export(char **av)
 		}
 		return (0);
 	}
-	pair = malloc(sizeof(t_node));
+	pair = malloc(sizeof(t_bucket));
 	while (av[i])
 	{
 		pair = get_key_value(av[i++]);
