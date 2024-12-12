@@ -6,41 +6,12 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 21:23:30 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/11 15:06:33 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/12 23:02:51 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	check_isalpha_isunder(char str)
-{
-	if (ft_isalpha(str) || ft_isdigit(str) || str == '_')
-		return (str);
-	return (0);
-}
-
-static char	*get_env(char *line, int *i, int *start)
-{
-	*start = *i;
-	if (line[*start] != '$')
-		return (NULL);
-	if (check_isalpha_isunder(line[*i + 1]) == 0 && line[*i + 1] != '?')
-	{
-		(*i)++;
-		return (ft_substr(line, *start, 1));
-	}
-	(*i)++;
-	if (line[*i] == '?')
-	{
-		(*i)++;
-		return (ft_itoa(g_last_status));
-	}
-	while (check_isalpha_isunder(line[*i]))
-		(*i)++;
-	return (getenv(ft_substr(line, *start + 1, *i - *start - 1)));
-}
-
-// パラメータ展開を行う関数
 char	*param_expand(char *line, int *i, int flag)
 {
 	int		start;
@@ -97,8 +68,7 @@ static char	validate_quote_expand(char *line, int *i, int *start, int *end)
 	return (quote_flag);
 }
 
-// クォートを展開する関数
-char	*quote_expand(char *line, int *i)
+static char	*quote_expand(char *line, int *i)
 {
 	int		start;
 	int		end;
@@ -109,9 +79,7 @@ char	*quote_expand(char *line, int *i)
 	if (!line || line[*i] == '\0')
 		return (NULL);
 	start = *i;
-	// クォーテーションがあったらここで処理
 	quote_flag = validate_quote_expand(line, i, &start, &end);
-	// なかった場合の処理
 	if (!quote_flag)
 	{
 		while (line[*i] && !check_quote(line, *i))
@@ -127,7 +95,6 @@ char	*quote_expand(char *line, int *i)
 	return (value);
 }
 
-// トークンを分割
 static void	word_split(t_token *tokens)
 {
 	int		i;

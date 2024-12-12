@@ -84,6 +84,7 @@ typedef struct s_node
 
 void							set_signal(void);
 void							reset_signal(void);
+char							check_isalpha_isunder(char str);
 void							fatal_error(const char *msg) __attribute__((noreturn));
 void							err_exit(const char *location, const char *msg,
 									int status);
@@ -109,6 +110,12 @@ void							expand_heredoc(char **line, int flag);
 void							prepare_pipe(t_node *node);
 void							pipe_parent(t_node *node);
 void							pipe_child(t_node *node);
+bool							check_pipe(t_token *token);
+t_node_type						check_redirect(t_token *token);
+char							**tokens_to_argv(t_token *tokens);
+char							*search_path(const char *filename);
+void							validate_path(const char *path,
+									const char *filename);
 
 extern char			**environ;
 

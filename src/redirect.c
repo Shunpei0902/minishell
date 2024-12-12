@@ -1,55 +1,18 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:59:37 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/12 20:23:32 by naokiiida        ###   ########.fr       */
+/*   Updated: 2024/12/12 23:25:23 by sasano           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #include "minishell.h"
 
 bool	readline_interrupted = false;
-
-void	expand_delimiter(char **delimiter, int *flag)
-{
-	int		i;
-	char	*tmp;
-
-	i = -1;
-	*flag = 0;
-	tmp = *delimiter;
-	while (tmp[++i])
-	{
-		if (tmp[i] == '\"' || tmp[i] == '\'')
-		{
-			*flag = 1;
-			break ;
-		}
-	}
-	i = 0;
-	*delimiter = quote_expand(*delimiter, &i);
-	free(tmp);
-}
-
-void	expand_heredoc(char **line, int flag)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	if (!*line || **line == '\0' || **line == '\n')
-		return ;
-	if (!flag)
-	{
-		tmp = *line;
-		*line = param_expand(*line, &i, 0);
-		free(tmp);
-	}
-}
 
 int	read_heredoc(char *delimiter)
 {

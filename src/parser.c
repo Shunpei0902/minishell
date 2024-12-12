@@ -6,33 +6,11 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 18:34:54 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/07 02:15:22 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/12 23:08:56 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_node_type	check_redirect(t_token *token)
-{
-	if (token->type == TOKEN_REDIR_IN)
-		return (NODE_REDIR_IN);
-	else if (token->type == TOKEN_REDIR_OUT)
-		return (NODE_REDIR_OUT);
-	else if (token->type == TOKEN_REDIR_APPEND)
-		return (NODE_REDIR_APPEND);
-	else if (token->type == TOKEN_REDIR_HEREDOC)
-		return (NODE_REDIR_HEREDOC);
-	return (NODE_COMMAND);
-}
-
-bool	check_pipe(t_token *token)
-{
-	if (token == NULL)
-		return (true);
-	if (token->type != TOKEN_WORD)
-		return (true);
-	return (false);
-}
 
 t_node	*new_node(t_node_type type)
 {

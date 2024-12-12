@@ -62,3 +62,5 @@ readline-readline-8.2/
 ext/
 minishell
 file*
+minishell_tester/
+minitester
