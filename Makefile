@@ -4,25 +4,22 @@ LIBFT = ./libft
 SDIR := src/
 ODIR := obj/
 IDIR := inc/
-SRCS := error.c free.c main.c parser.c redirect.c tokenizer.c pipe.c expand.c signal.c
+SRCS := error.c free.c main.c parser.c redirect.c tokenizer.c pipe.c expand.c signal.c builtin.c b_cd.c b_echo.c b_env.c b_exit.c b_unset.c b_export.c hashmap.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
-# INCS = -DREADLINE_LIBRARY -I$(IDIR) -I$(LINC) -I$(LIBFT)
+# INCS = -DREADLINE_LIBRARY -I$(IDIR) -I$(LIBFT)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP
-# LDFLAGS := - -L$(LIBFT) -lft　-L .brew/opt/readline/lib　-I .brew/opt/readline/include -lreadline -lhistory
-# LDFLAGS := - -L$(LIBFT) -lft
+# LDFLAGS := -lreadline -L$(LIBFT) -lft
 # CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS) -std=c99
 CC := cc
 MKDIR := mkdir -p
-OS = $(shell uname)lreadline
+OS = $(shell uname)
 
 READLINE_DIR := $(shell brew --prefix readline)
 
 # rl_replace_lineがmacOSのreadlineライブラリには存在しないため、brewからインストールしたreadlineを使う
 LDFLAGS := -L$(LIBFT) -lft -L$(READLINE_DIR)/lib -lreadline
 INCS := -DREADLINE_LIBRARY -I$(IDIR) -I$(LIBFT) -I$(READLINE_DIR)/include
-CFLAGS := -Wall -Wextra -Werror -std=c99 $(DEPFLAGS)
-# CFLAGS := -Wall -Wextra -Werror -std=c99 $(DEPFLAGS) -g3 -fsanitize=address
 
 ifdef WITH_LEAKS
 	CFLAGS += -DLEAK_CHECK -g3 -O0
@@ -47,7 +44,7 @@ all: $(NAME)
 $(NAME): $(OBJS) | ft
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
-ft: $(OBJS) | $(ODIR)
+ft:
 	@make -C $(LIBFT)
 
 $(ODIR)%.o:$(SDIR)%.c | $(ODIR)
@@ -70,9 +67,11 @@ re: fclean
 	@make all
 
 norm: requirements.txt
-	pip list --outdated
-	pip install -U -r requirements.txt
-	norminette $(SRCS)
+	pip3 list --outdated
+	norminette $(addprefix $(SDIR), $(SRCS)) $(IDIR)*.h
+
+fmt:
+	c_formatter_42 $(addprefix $(SDIR), $(SRCS)) $(IDIR)*.h
 
 deps:
 	nm -u $(NAME)

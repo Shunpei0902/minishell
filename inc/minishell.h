@@ -1,6 +1,18 @@
+/******************************************************************************/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/11 17:13:35 by niida             #+#    #+#             */
+/*   Updated: 2024/12/12 20:22:33 by naokiiida        ###   ########.fr       */
+/*                                                                            */
+/******************************************************************************/
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include "../libft/libft.h"
+# include "libft.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -44,7 +56,7 @@ typedef struct s_token
 	struct s_token				*next;
 }								t_token;
 
-//ノードの種類
+// ノードの種類
 typedef enum e_node_type
 {
 	NODE_COMMAND,
@@ -97,5 +109,22 @@ void							expand_heredoc(char **line, int flag);
 void							prepare_pipe(t_node *node);
 void							pipe_parent(t_node *node);
 void							pipe_child(t_node *node);
+
+extern char			**environ;
+
+int					b_echo(char **av);
+int					b_cd(char **av);
+// int	b_pwd(void);
+int					b_pwd(char **av);
+int					b_export(char **av);
+int					b_unset(char **av);
+// int	b_env(void);
+int					b_env(char **av);
+int					b_exit(char **av);
+
+typedef int			(*t_function)(char **);
+int					is_builtin(char *cmd);
+int					exec_builtin(int i, char **cmd);
+void				update_environ(void);
 
 #endif

@@ -1,14 +1,14 @@
-/* ************************************************************************** */
+/******************************************************************************/
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/11 17:47:20 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/12 20:16:46 by naokiiida        ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/******************************************************************************/
 
 #include "minishell.h"
 
@@ -110,6 +110,7 @@ pid_t	exec_pipe(t_node *node)
 	const char	*path;
 	pid_t		pid;
 	char		**argv;
+	int			builtin_id;
 
 	prepare_pipe(node);
 	pid = fork();
@@ -122,12 +123,22 @@ pid_t	exec_pipe(t_node *node)
 		redirect(node->redirects);
 		argv = tokens_to_argv(node->args);
 		path = argv[0];
-		if (path && path[0] != '/' && path[0] != '.')
-			path = search_path(argv[0]);
-		validate_path(path, argv[0]);
-		execve(path, argv, environ);
-		reset_redirect(node->redirects);
-		fatal_error("execve");
+		builtin_id = is_builtin(argv[0]);
+		if (builtin_id > 0)
+		{
+			exec_builtin(builtin_id, argv);
+			reset_redirect(node->redirects);
+			fatal_error("builtin");
+		}
+		else
+		{
+			if (path && path[0] != '/' && path[0] != '.')
+				path = search_path(argv[0]);
+			validate_path(path, argv[0]);
+			execve(path, argv, environ);
+			reset_redirect(node->redirects);
+			fatal_error("execve");
+		}
 	}
 	else
 	{
