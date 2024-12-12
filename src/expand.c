@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 21:23:30 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/10 12:25:47 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/11 15:06:33 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,33 @@ static char	*get_env(char *line, int *i, int *start)
 }
 
 // パラメータ展開を行う関数
-char	*param_expand(char *line, int *i)
+char	*param_expand(char *line, int *i, int flag)
 {
 	int		start;
 	char	*value;
 	char	*tmp;
 
-	if (!line || line[*i] == '\0')
+	if (!line || !line[*i])
 		return (NULL);
 	value = get_env(line, i, &start);
-	if (!value && line[start] != '$')
+	if (!value && line[start] && line[start] != '$')
 	{
-		while (line[(*i)] && line[*i] != '$')
+		while (line && line[*i] && line[*i] != '$')
 		{
-			if (line[*i] == '\'')
+			if (line[*i] == '\"' && flag == 0)
+				flag = 1;
+			else if (line[*i] == '\"' && flag == 1)
+				flag = 0;
+			else if (line[*i] == '\'' && flag == 0)
 			{
-				while (line[++(*i)] != '\'')
+				while (line[++(*i)] && line[*i] != '\'')
 					;
 			}
 			(*i)++;
 		}
 		value = ft_substr(line, start, *i - start);
 	}
-	tmp = ft_strjoin(value, param_expand(line, i));
+	tmp = ft_strjoin(value, param_expand(line, i, flag));
 	if (line[start] != '$')
 		free(value);
 	return (tmp);
@@ -167,7 +171,7 @@ void	expand(t_token *tokens)
 		{
 			i = 0;
 			tmp = tokens->value;
-			tokens->value = param_expand(tokens->value, &i);
+			tokens->value = param_expand(tokens->value, &i, 0);
 			word_split(tokens);
 			i = 0;
 			tokens->value = quote_expand(tokens->value, &i);

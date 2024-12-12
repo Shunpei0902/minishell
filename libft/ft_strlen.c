@@ -6,15 +6,15 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 22:34:14 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/10 14:10:39 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/11 12:50:08 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(char const *str)
+int	ft_strlen(char const *str)
 {
-	size_t	i;
+	int	i;
 
 	if (!str)
 		return (0);
