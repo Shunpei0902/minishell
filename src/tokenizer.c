@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 03:52:14 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/06 13:04:19 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/11 15:03:02 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ char	*get_word(char *line, int *i)
 	start = *i;
 	// クォーテーションがあったらここで処理
 	quote_flag = validate_quote(line, i, &start, &end);
+	if (g_syntax_error == true)
+		return (NULL);
 	// なかった場合の処理
 	if (!quote_flag)
 	{
@@ -171,7 +173,7 @@ t_token	*tokenize(char *line)
 	head = NULL;
 	g_syntax_error = false;
 	i = 0;
-	while (line[i] && g_syntax_error == false)
+	while (g_syntax_error == false && line[i])
 	{
 		while (line[i] == ' ' || line[i] == '\t' || line[i] == '\n')
 			i++;

@@ -18,8 +18,10 @@
 // signal handling
 # include <signal.h>
 
-extern bool			g_syntax_error;
-extern int			g_last_status;
+extern bool						g_syntax_error;
+extern int						g_last_status;
+extern bool						readline_interrupted;
+extern volatile sig_atomic_t	sig;
 
 // トークンの種類
 typedef enum e_token_type
@@ -31,16 +33,16 @@ typedef enum e_token_type
 	TOKEN_REDIR_APPEND,
 	TOKEN_REDIR_HEREDOC,
 	TOKEN_EOF
-}					t_token_type;
+}								t_token_type;
 
 // トークンの構造体
 // typedef struct s_token	t_token;
 typedef struct s_token
 {
-	t_token_type	type;
-	char			*value;
-	struct s_token	*next;
-}					t_token;
+	t_token_type				type;
+	char						*value;
+	struct s_token				*next;
+}								t_token;
 
 //ノードの種類
 typedef enum e_node_type
@@ -50,46 +52,50 @@ typedef enum e_node_type
 	NODE_REDIR_OUT,
 	NODE_REDIR_APPEND,
 	NODE_REDIR_HEREDOC
-}					t_node_type;
+}								t_node_type;
 
 // ノードの構造体
 // typedef struct s_node	t_node;
 typedef struct s_node
 {
-	t_node_type		type;
-	struct s_node	*next;
-	t_token			*args;
-	struct s_node	*redirects;
-	t_token			*filename;
-	int				filefd;
-	int				targetfd;
-	int				stashed_targetfd;
-	int				inpipe[2];
-	int				outpipe[2];
-}					t_node;
+	t_node_type					type;
+	struct s_node				*next;
+	t_token						*args;
+	struct s_node				*redirects;
+	t_token						*filename;
+	int							filefd;
+	int							targetfd;
+	int							stashed_targetfd;
+	int							inpipe[2];
+	int							outpipe[2];
+}								t_node;
 
-void				set_signal(void);
-void				fatal_error(const char *msg) __attribute__((noreturn));
-void				err_exit(const char *location, const char *msg, int status);
-void				tokenize_error(const char *location, char **line);
-void				parse_error(const char *location, t_token **tokens);
-void				free_tokens(t_token *tokens);
-void				free_argv(char **argv);
-void				free_node(t_node *node);
-bool				check_quote(char *line, int i);
-char				*get_word(char *line, int *i);
-t_token				*tokenize(char *line);
-void				expand(t_token *tokens);
-char				*param_expand(char *line, int *i);
-char				*quote_expand(char *line, int *i);
-t_node				*parse(t_token *tokens);
-void				open_redir_file(t_node *node);
-void				redirect(t_node *node);
-void				reset_redirect(t_node *node);
-int					read_heredoc(char *delimiter);
-void				expand_heredoc(char **line, int flag);
-void				prepare_pipe(t_node *node);
-void				pipe_parent(t_node *node);
-void				pipe_child(t_node *node);
+void							set_signal(void);
+void							reset_signal(void);
+void							fatal_error(const char *msg) __attribute__((noreturn));
+void							err_exit(const char *location, const char *msg,
+									int status);
+void							tokenize_error(const char *location,
+									char **line);
+void							parse_error(const char *location,
+									t_token **tokens);
+void							free_tokens(t_token *tokens);
+void							free_argv(char **argv);
+void							free_node(t_node *node);
+bool							check_quote(char *line, int i);
+char							*get_word(char *line, int *i);
+t_token							*tokenize(char *line);
+void							expand(t_token *tokens);
+char							*param_expand(char *line, int *i, int flag);
+char							*quote_expand(char *line, int *i);
+t_node							*parse(t_token *tokens);
+void							open_redir_file(t_node *node);
+void							redirect(t_node *node);
+void							reset_redirect(t_node *node);
+int								read_heredoc(char *delimiter);
+void							expand_heredoc(char **line, int flag);
+void							prepare_pipe(t_node *node);
+void							pipe_parent(t_node *node);
+void							pipe_child(t_node *node);
 
 #endif

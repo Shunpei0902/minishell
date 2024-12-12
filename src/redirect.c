@@ -6,11 +6,13 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:59:37 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/10 12:31:45 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/11 14:46:37 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+bool	readline_interrupted = false;
 
 void	expand_delimiter(char **delimiter, int *flag)
 {
@@ -44,7 +46,7 @@ void	expand_heredoc(char **line, int flag)
 	if (!flag)
 	{
 		tmp = *line;
-		*line = param_expand(*line, &i);
+		*line = param_expand(*line, &i, 0);
 		free(tmp);
 	}
 }
@@ -58,13 +60,14 @@ int	read_heredoc(char *delimiter)
 	if (pipe(fd) < 0)
 		fatal_error("pipe");
 	expand_delimiter(&delimiter, &flag);
+	readline_interrupted = false;
 	while (1)
 	{
 		line = readline("heredoc> ");
 		if (line == NULL)
 			break ;
 		if ((ft_strncmp(line, delimiter, ft_strlen(line)) == 0 && *line != '\0')
-			|| (*line == '\n' && !delimiter))
+			|| (*line == '\n' && !delimiter) || readline_interrupted)
 		{
 			free(line);
 			break ;
@@ -75,6 +78,11 @@ int	read_heredoc(char *delimiter)
 		free(line);
 	}
 	close(fd[1]);
+	if (readline_interrupted)
+	{
+		close(fd[0]);
+		return (-1);
+	}
 	return (fd[0]);
 }
 
@@ -97,9 +105,10 @@ void	open_redir_file(t_node *node)
 {
 	if (!node)
 		return ;
-	if (node->type == NODE_REDIR_IN)
+	if (node->type == NODE_REDIR_IN && node->filename && node->filename->value)
 		node->filefd = open(node->filename->value, O_RDONLY);
-	else if (node->type == NODE_REDIR_OUT)
+	else if (node->type == NODE_REDIR_OUT && node->filename
+		&& node->filename->value)
 		node->filefd = open(node->filename->value, O_WRONLY | O_CREAT | O_TRUNC,
 				0644);
 	else if (node->type == NODE_REDIR_APPEND)

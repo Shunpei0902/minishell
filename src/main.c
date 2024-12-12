@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/10 12:31:09 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/11 17:47:20 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,12 @@ int	wait_pipe(pid_t last_pid)
 	{
 		wait_pid = wait(&wstatus);
 		if (wait_pid == last_pid)
-			status = WEXITSTATUS(wstatus);
+		{
+			if (WIFSIGNALED(wstatus))
+				status = 128 + WTERMSIG(wstatus);
+			else
+				status = WEXITSTATUS(wstatus);
+		}
 		if (wait_pid < 0)
 		{
 			if (errno == ECHILD)
@@ -112,11 +117,12 @@ pid_t	exec_pipe(t_node *node)
 		fatal_error("fork");
 	else if (pid == 0)
 	{
+		reset_signal();
 		pipe_child(node);
 		redirect(node->redirects);
 		argv = tokens_to_argv(node->args);
 		path = argv[0];
-		if (path[0] != '/' && path[0] != '.')
+		if (path && path[0] != '/' && path[0] != '.')
 			path = search_path(argv[0]);
 		validate_path(path, argv[0]);
 		execve(path, argv, environ);

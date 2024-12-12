@@ -21,7 +21,8 @@ READLINE_DIR := $(shell brew --prefix readline)
 # rl_replace_lineがmacOSのreadlineライブラリには存在しないため、brewからインストールしたreadlineを使う
 LDFLAGS := -L$(LIBFT) -lft -L$(READLINE_DIR)/lib -lreadline
 INCS := -DREADLINE_LIBRARY -I$(IDIR) -I$(LIBFT) -I$(READLINE_DIR)/include
-CFLAGS := -Wall -Wextra -Werror -std=c99 $(DEPFLAGS) -g3 -fsanitize=address
+CFLAGS := -Wall -Wextra -Werror -std=c99 $(DEPFLAGS)
+# CFLAGS := -Wall -Wextra -Werror -std=c99 $(DEPFLAGS) -g3 -fsanitize=address
 
 ifdef WITH_LEAKS
 	CFLAGS += -DLEAK_CHECK -g3 -O0
