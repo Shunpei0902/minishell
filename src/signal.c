@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 09:20:46 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 12:15:01 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:33:44 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	check_state(void)
 		g_readline_interrupted = true;
 		rl_replace_line("", 0);
 		rl_done = 1;
+		g_last_status = 130;
 		return (0);
 	}
 	return (0);

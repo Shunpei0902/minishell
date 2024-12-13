@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 13:43:05 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/13 17:26:21 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@ int	wait_pipe(pid_t last_pid)
 	int		wstatus;
 	int		status;
 
-	// pid_t	wait_result;
-	// int		status;
-	// int		wstatus;
 	status = 0;
 	while (1)
 	{
@@ -30,10 +27,13 @@ int	wait_pipe(pid_t last_pid)
 		if (wait_pid == last_pid)
 		{
 			if (WIFSIGNALED(wstatus))
+			{
+				printf("WTERMSIG(wstatus): %d\n", WTERMSIG(wstatus));
+				printf("status: %d\n", status);
 				status = 128 + WTERMSIG(wstatus);
+			}
 			else
 				status = WEXITSTATUS(wstatus);
-			printf("status: %d\n", status);
 		}
 		else if (wait_pid < 0)
 		{
@@ -46,27 +46,6 @@ int	wait_pipe(pid_t last_pid)
 		}
 	}
 	return (status);
-	// while (1)
-	// {
-	// 	wait_pid = wait(&wstatus);
-	// 	if (wait_pid == last_pid)
-	// 	{
-	// 		if (WIFSIGNALED(wstatus))
-	// 			status = 128 + WTERMSIG(wstatus);
-	// 		else
-	// 			status = WEXITSTATUS(wstatus);
-	// 	}
-	// 	else if (wait_pid < 0)
-	// 	{
-	// 		if (errno == ECHILD)
-	// 			break ;
-	// 		else if (errno == EINTR)
-	// 			continue ;
-	// 		else
-	// 			fatal_error("wait");
-	// 	}
-	// }
-	// return (status);
 }
 
 // pid_t	exec_pipe(t_node *node)

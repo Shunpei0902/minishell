@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:07:54 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 12:48:32 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/13 17:22:13 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ void	exec_pipe_child(t_node *node)
 		exit(1);
 	path = argv[0];
 	builtin_id = is_builtin(argv[0]);
-	if (builtin_id > 0)
-		exec_builtin_command(builtin_id, argv, node);
-	else
-		exec_external_command(path, argv, node);
+	// if (builtin_id > 0)
+	// 	exec_builtin_command(builtin_id, argv, node);
+	// else
+	exec_external_command(path, argv, node);
 }
 
 void	exec_pipe_parent(t_node *node, pid_t pid)
