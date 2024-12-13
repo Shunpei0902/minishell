@@ -6,27 +6,27 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 09:20:46 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/12 23:06:02 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/13 12:15:01 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-volatile sig_atomic_t	sig = 0;
+volatile sig_atomic_t	g_sig = 0;
 
 void	sigint_handler(int signo)
 {
-	sig = signo;
+	g_sig = signo;
 }
 
 int	check_state(void)
 {
-	if (sig == 0)
+	if (g_sig == 0)
 		return (0);
-	else if (sig == SIGINT)
+	else if (g_sig == SIGINT)
 	{
-		sig = 0;
-		readline_interrupted = true;
+		g_sig = 0;
+		g_readline_interrupted = true;
 		rl_replace_line("", 0);
 		rl_done = 1;
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/12 23:25:35 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/13 13:43:05 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ int	wait_pipe(pid_t last_pid)
 	int		wstatus;
 	int		status;
 
+	// pid_t	wait_result;
+	// int		status;
+	// int		wstatus;
+	status = 0;
 	while (1)
 	{
 		wait_pid = wait(&wstatus);
@@ -29,63 +33,88 @@ int	wait_pipe(pid_t last_pid)
 				status = 128 + WTERMSIG(wstatus);
 			else
 				status = WEXITSTATUS(wstatus);
+			printf("status: %d\n", status);
 		}
-		if (wait_pid < 0)
+		else if (wait_pid < 0)
 		{
 			if (errno == ECHILD)
 				break ;
-			fatal_error("wait");
+			else if (errno == EINTR)
+				continue ;
+			else
+				fatal_error("wait");
 		}
 	}
 	return (status);
+	// while (1)
+	// {
+	// 	wait_pid = wait(&wstatus);
+	// 	if (wait_pid == last_pid)
+	// 	{
+	// 		if (WIFSIGNALED(wstatus))
+	// 			status = 128 + WTERMSIG(wstatus);
+	// 		else
+	// 			status = WEXITSTATUS(wstatus);
+	// 	}
+	// 	else if (wait_pid < 0)
+	// 	{
+	// 		if (errno == ECHILD)
+	// 			break ;
+	// 		else if (errno == EINTR)
+	// 			continue ;
+	// 		else
+	// 			fatal_error("wait");
+	// 	}
+	// }
+	// return (status);
 }
 
-pid_t	exec_pipe(t_node *node)
-{
-	extern char	**environ;
-	const char	*path;
-	pid_t		pid;
-	char		**argv;
-	int			builtin_id;
+// pid_t	exec_pipe(t_node *node)
+// {
+// 	extern char	**environ;
+// 	const char	*path;
+// 	pid_t		pid;
+// 	char		**argv;
+// 	int			builtin_id;
 
-	prepare_pipe(node);
-	pid = fork();
-	if (pid < 0)
-		fatal_error("fork");
-	else if (pid == 0)
-	{
-		reset_signal();
-		pipe_child(node);
-		redirect(node->redirects);
-		argv = tokens_to_argv(node->args);
-		if (argv == NULL)
-			return (1);
-		path = argv[0];
-		builtin_id = is_builtin(argv[0]);
-		if (builtin_id > 0)
-		{
-			exec_builtin(builtin_id, argv);
-			reset_redirect(node->redirects);
-			fatal_error("builtin");
-		}
-		else
-		{
-			if (path && path[0] != '/' && path[0] != '.')
-				path = search_path(argv[0]);
-			validate_path(path, argv[0]);
-			execve(path, argv, environ);
-			reset_redirect(node->redirects);
-			fatal_error("execve");
-		}
-	}
-	else
-	{
-		pipe_parent(node);
-		if (node->next)
-			return (exec_pipe(node->next));
-		return (pid);
-	}
-}
+// 	prepare_pipe(node);
+// 	pid = fork();
+// 	if (pid < 0)
+// 		fatal_error("fork");
+// 	else if (pid == 0)
+// 	{
+// 		reset_signal();
+// 		pipe_child(node);
+// 		redirect(node->redirects);
+// 		argv = tokens_to_argv(node->args);
+// 		if (argv == NULL)
+// 			return (1);
+// 		path = argv[0];
+// 		builtin_id = is_builtin(argv[0]);
+// 		if (builtin_id > 0)
+// 		{
+// 			exec_builtin(builtin_id, argv);
+// 			reset_redirect(node->redirects);
+// 			fatal_error("builtin");
+// 		}
+// 		else
+// 		{
+// 			if (path && path[0] != '/' && path[0] != '.')
+// 				path = search_path(argv[0]);
+// 			validate_path(path, argv[0]);
+// 			execve(path, argv, environ);
+// 			reset_redirect(node->redirects);
+// 			fatal_error("execve");
+// 		}
+// 	}
+// 	else
+// 	{
+// 		pipe_parent(node);
+// 		if (node->next)
+// 			return (exec_pipe(node->next));
+// 		return (pid);
+// 	}
+// }
 
 int	exec(t_node *node)
 {

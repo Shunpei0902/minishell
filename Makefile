@@ -4,7 +4,10 @@ LIBFT = ./libft
 SDIR := src/
 ODIR := obj/
 IDIR := inc/
-SRCS := error.c free.c main.c parser.c redirect.c tokenizer.c pipe.c expand.c signal.c builtin.c b_cd.c b_echo.c b_env.c b_exit.c b_unset.c b_export.c hashmap.c
+SRCS := b_cd.c	b_export.c	expand.c	main.c	redirect.c	exec.c	tokenize.c	b_echo.c	b_unset.c	expand_utils.c\
+        parse_utils.c	redirect_utils.c	utils.c b_env.c	builtin.c	free.c	parser.c	signal.c	b_exit.c\
+		error.c	hashmap.c	pipe.c	tokenize_utils.c
+# SRCS := error.c free.c main.c parser.c redirect.c tokenizer.c pipe.c expand.c signal.c builtin.c b_cd.c b_echo.c b_env.c b_exit.c b_unset.c b_export.c hashmap.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 # INCS = -DREADLINE_LIBRARY -I$(IDIR) -I$(LIBFT)
 DEPS = $(patsubst %.o,%.d, $(OBJS))

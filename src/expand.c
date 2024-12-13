@@ -6,38 +6,53 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 21:23:30 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/12 23:02:51 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/13 12:44:50 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// char	*param_expand(char *line, int *i, int flag)
+// {
+// 	int		start;
+// 	char	*value;
+// 	char	*tmp;
+
+// 	if (!line || !line[*i])
+// 		return (NULL);
+// 	value = get_env(line, i, &start);
+// 	if (!value && line[start] && line[start] != '$')
+// 	{
+// 		while (line && line[*i] && line[*i] != '$')
+// 		{
+// 			if (line[*i] == '\"' && flag == 0)
+// 				flag = 1;
+// 			else if (line[*i] == '\"' && flag == 1)
+// 				flag = 0;
+// 			else if (line[*i] == '\'' && flag == 0)
+// 			{
+// 				while (line[++(*i)] && line[*i] != '\'')
+// 					;
+// 			}
+// 			(*i)++;
+// 		}
+// 		value = ft_substr(line, start, *i - start);
+// 	}
+// 	tmp = ft_strjoin(value, param_expand(line, i, flag));
+// 	if (line[start] != '$')
+// 		free(value);
+// 	return (tmp);
+// }
 char	*param_expand(char *line, int *i, int flag)
 {
-	int		start;
 	char	*value;
 	char	*tmp;
+	int		start;
 
 	if (!line || !line[*i])
 		return (NULL);
-	value = get_env(line, i, &start);
-	if (!value && line[start] && line[start] != '$')
-	{
-		while (line && line[*i] && line[*i] != '$')
-		{
-			if (line[*i] == '\"' && flag == 0)
-				flag = 1;
-			else if (line[*i] == '\"' && flag == 1)
-				flag = 0;
-			else if (line[*i] == '\'' && flag == 0)
-			{
-				while (line[++(*i)] && line[*i] != '\'')
-					;
-			}
-			(*i)++;
-		}
-		value = ft_substr(line, start, *i - start);
-	}
+	start = *i;
+	value = get_expanded_value(line, i, &flag);
 	tmp = ft_strjoin(value, param_expand(line, i, flag));
 	if (line[start] != '$')
 		free(value);
@@ -68,7 +83,7 @@ static char	validate_quote_expand(char *line, int *i, int *start, int *end)
 	return (quote_flag);
 }
 
-static char	*quote_expand(char *line, int *i)
+char	*quote_expand(char *line, int *i)
 {
 	int		start;
 	int		end;

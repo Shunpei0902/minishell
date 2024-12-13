@@ -1,14 +1,14 @@
-/******************************************************************************/
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/11 17:13:35 by niida             #+#    #+#             */
-/*   Updated: 2024/12/12 20:22:33 by naokiiida        ###   ########.fr       */
+/*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
+/*   Updated: 2024/12/13 12:28:51 by sasano           ###   ########.fr       */
 /*                                                                            */
-/******************************************************************************/
+/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -32,8 +32,9 @@
 
 extern bool						g_syntax_error;
 extern int						g_last_status;
-extern bool						readline_interrupted;
-extern volatile sig_atomic_t	sig;
+extern bool						g_readline_interrupted;
+extern volatile sig_atomic_t	g_sig;
+extern char						**environ;
 
 // トークンの種類
 typedef enum e_token_type
@@ -116,22 +117,35 @@ char							**tokens_to_argv(t_token *tokens);
 char							*search_path(const char *filename);
 void							validate_path(const char *path,
 									const char *filename);
-
-extern char			**environ;
-
-int					b_echo(char **av);
-int					b_cd(char **av);
+pid_t							exec_pipe(t_node *node);
+char							*get_env(char *line, int *i, int *start);
+char							check_isalpha_isunder(char str);
+void							expand_delimiter(char **delimiter, int *flag);
+void							add_token(t_token **head, t_token *current);
+char							validate_quote(char *line, int *i, int *start,
+									int *end);
+enum e_token_type				check_token_type(char *line, int i);
+bool							check_symbol(char *line, int i);
+bool							check_quote(char *line, int i);
+void							skip_single_quotes(char *line, int *i);
+char							*extract_non_env_value(char *line, int *i,
+									int start, int *flag);
+char							*get_expanded_value(char *line, int *i,
+									int *flag);
+int								read_heredoc(char *delimiter);
+int								b_echo(char **av);
+int								b_cd(char **av);
 // int	b_pwd(void);
-int					b_pwd(char **av);
-int					b_export(char **av);
-int					b_unset(char **av);
+int								b_pwd(char **av);
+int								b_export(char **av);
+int								b_unset(char **av);
 // int	b_env(void);
-int					b_env(char **av);
-int					b_exit(char **av);
+int								b_env(char **av);
+int								b_exit(char **av);
 
-typedef int			(*t_function)(char **);
-int					is_builtin(char *cmd);
-int					exec_builtin(int i, char **cmd);
-void				update_environ(void);
+typedef int						(*t_function)(char **);
+int								is_builtin(char *cmd);
+int								exec_builtin(int i, char **cmd);
+void							update_environ(void);
 
 #endif
