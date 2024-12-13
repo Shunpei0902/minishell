@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 17:26:21 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/13 18:37:31 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,7 @@ int	wait_pipe(pid_t last_pid)
 		if (wait_pid == last_pid)
 		{
 			if (WIFSIGNALED(wstatus))
-			{
-				printf("WTERMSIG(wstatus): %d\n", WTERMSIG(wstatus));
-				printf("status: %d\n", status);
 				status = 128 + WTERMSIG(wstatus);
-			}
 			else
 				status = WEXITSTATUS(wstatus);
 		}
@@ -41,8 +37,7 @@ int	wait_pipe(pid_t last_pid)
 				break ;
 			else if (errno == EINTR)
 				continue ;
-			else
-				fatal_error("wait");
+			fatal_error("wait");
 		}
 	}
 	return (status);
