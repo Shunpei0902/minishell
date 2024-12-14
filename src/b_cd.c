@@ -19,7 +19,7 @@ int	b_cd(char **av)
 	char	*path;
 
 	path = *++av;
-	if (!path)
+	if (!path || *path == '~')
 		path = getenv("HOME");
 	status = chdir(path);
 	return (status);

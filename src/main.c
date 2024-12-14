@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/wait.h>
 
 int		g_last_status;
 

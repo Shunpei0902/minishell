@@ -248,4 +248,6 @@ assert './infinite_loop'
 # 2. Ctrl-C
 # 3. Ctrl-D
 
+assert '|uname'
+assert 'cat lol.c | cat > lol.c'
 cleanup
