@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:03:39 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/12 23:12:36 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/15 08:27:28 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,40 @@
 
 void	validate_path(const char *path, const char *filename)
 {
-	if (path == NULL)
+	struct stat	st;
+
+	if (path == NULL || *path == '\0' || ft_strcmp(filename, "..") == 0
+		|| access(path, F_OK) < 0)
 		err_exit(filename, "command not found", 127);
-	if (access(path, F_OK) < 0)
-		err_exit(filename, "command not found", 127);
+	if (stat(path, &st) < 0)
+		fatal_error("fstat");
+	if (S_ISDIR(st.st_mode))
+		err_exit(filename, "is a directory", 126);
+	if (access(path, X_OK) < 0)
+		err_exit(path, "Permission denied", 126);
 }
 
 char	*search_path(const char *filename)
 {
-	char	*string;
-	char	*path;
+	char	path[PATH_MAX];
+	char	*env_path;
 	char	*value;
 
-	path = getenv("PATH");
+	env_path = getenv("PATH");
 	while (*path)
 	{
-		value = ft_strchr(path, ':');
+		ft_bzero(path, PATH_MAX);
+		value = ft_strchr(env_path, ':');
 		if (value == NULL)
-			value = path + ft_strlen(path);
-		string = (char *)malloc(value - path + ft_strlen(filename) + 2);
-		if (string == NULL)
-			fatal_error("malloc");
-		ft_strlcpy(string, path, value - path + 1);
-		ft_strlcat(string, "/", value - path + 2);
-		ft_strlcat(string, filename, value - path + ft_strlen(filename) + 2);
-		if (access(string, X_OK) == 0)
-			return (string);
-		free(string);
+			value = env_path + ft_strlen(env_path);
+		ft_strlcpy(path, env_path, value - env_path + 1);
+		ft_strlcat(path, "/", value - env_path + 2);
+		ft_strlcat(path, filename, value - env_path + ft_strlen(filename) + 2);
+		if (access(path, F_OK) == 0)
+			return (ft_strdup(path));
 		if (*value == '\0')
 			break ;
-		path = value + 1;
+		env_path = value + 1;
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 18:37:31 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/15 02:38:01 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,53 +42,6 @@ int	wait_pipe(pid_t last_pid)
 	}
 	return (status);
 }
-
-// pid_t	exec_pipe(t_node *node)
-// {
-// 	extern char	**environ;
-// 	const char	*path;
-// 	pid_t		pid;
-// 	char		**argv;
-// 	int			builtin_id;
-
-// 	prepare_pipe(node);
-// 	pid = fork();
-// 	if (pid < 0)
-// 		fatal_error("fork");
-// 	else if (pid == 0)
-// 	{
-// 		reset_signal();
-// 		pipe_child(node);
-// 		redirect(node->redirects);
-// 		argv = tokens_to_argv(node->args);
-// 		if (argv == NULL)
-// 			return (1);
-// 		path = argv[0];
-// 		builtin_id = is_builtin(argv[0]);
-// 		if (builtin_id > 0)
-// 		{
-// 			exec_builtin(builtin_id, argv);
-// 			reset_redirect(node->redirects);
-// 			fatal_error("builtin");
-// 		}
-// 		else
-// 		{
-// 			if (path && path[0] != '/' && path[0] != '.')
-// 				path = search_path(argv[0]);
-// 			validate_path(path, argv[0]);
-// 			execve(path, argv, environ);
-// 			reset_redirect(node->redirects);
-// 			fatal_error("execve");
-// 		}
-// 	}
-// 	else
-// 	{
-// 		pipe_parent(node);
-// 		if (node->next)
-// 			return (exec_pipe(node->next));
-// 		return (pid);
-// 	}
-// }
 
 int	exec(t_node *node)
 {

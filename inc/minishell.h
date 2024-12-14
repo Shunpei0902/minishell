@@ -6,29 +6,26 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 12:28:51 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/15 03:00:01 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# include "hashmap.h"
 # include "libft.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
 # include <stdbool.h>
+# include <stdio.h>
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <unistd.h>
-
-// GNU readline uses FILE data type, part of stdio.h
-# include <stdio.h>
-// GNU readline
-# include <readline/history.h>
-# include <readline/readline.h>
-// signal handling
-# include <signal.h>
 
 extern bool						g_syntax_error;
 extern int						g_last_status;
@@ -36,7 +33,6 @@ extern bool						g_readline_interrupted;
 extern volatile sig_atomic_t	g_sig;
 extern char						**environ;
 
-// トークンの種類
 typedef enum e_token_type
 {
 	TOKEN_WORD,
@@ -48,8 +44,6 @@ typedef enum e_token_type
 	TOKEN_EOF
 }								t_token_type;
 
-// トークンの構造体
-// typedef struct s_token	t_token;
 typedef struct s_token
 {
 	t_token_type				type;
@@ -57,7 +51,6 @@ typedef struct s_token
 	struct s_token				*next;
 }								t_token;
 
-// ノードの種類
 typedef enum e_node_type
 {
 	NODE_COMMAND,
@@ -67,8 +60,6 @@ typedef enum e_node_type
 	NODE_REDIR_HEREDOC
 }								t_node_type;
 
-// ノードの構造体
-// typedef struct s_node	t_node;
 typedef struct s_node
 {
 	t_node_type					type;
