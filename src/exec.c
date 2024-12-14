@@ -36,7 +36,6 @@ void	exec_pipe_child(t_node *node)
 	extern char	**environ;
 	const char	*path;
 	char		**argv;
-	int			builtin_id;
 
 	reset_signal();
 	pipe_child(node);
@@ -45,11 +44,7 @@ void	exec_pipe_child(t_node *node)
 	if (argv == NULL)
 		exit(1);
 	path = argv[0];
-	builtin_id = is_builtin(argv[0]);
-	if (builtin_id > 0)
-		exec_builtin_command(builtin_id, argv, node);
-	else
-		exec_external_command(path, argv, node);
+	exec_external_command(path, argv, node);
 }
 
 void	exec_pipe_parent(t_node *node, pid_t pid)
