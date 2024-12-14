@@ -12,36 +12,41 @@
 
 #include "libft.h"
 #include "minishell.h"
-#include <signal.h>
 
-bool	isnum(char *av)
+bool	isnum(const char *str)
 {
-	while (*av)
-		if (!ft_isdigit(*++av))
-			return (false);
-	return (true);
+	size_t	i;
+
+	i = 0;
+	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+		str++;
+	if (*str == '-' || *str == '+')
+		str++;
+	while (ft_isdigit(*str))
+		str++;
+	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+		str++;
+	return (str[i] == '\0');
 }
 
+// TODO: on shell exit, pass status to g_last_status and hashmap_destroy();
+/**
+exit [n]
+		Cause the shell to exit with a status of n.  If n is omitted, the exit
+status is that of the last command executed.  A trap on EXIT is executed before
+the shell terminates.
+*/
 int	b_exit(char **av)
 {
-	int	pid;
+	uint8_t	status;
 
 	if (av[1] == NULL)
-	{
-		return (0);
-	}
-	if (av[2] != NULL)
-	{
-		printf("exit: too many arguments");
-		return (1);
-	}
-	if (!isnum(*av))
-	{
-		printf("exit: %s: numeric argument required\n", av[1]);
-		return (2);
-	}
-	pid = ft_atoi(av[1]);
-	if (kill(pid, SIGQUIT) == -1)
-		return (1);
-	return (pid);
+		status = g_last_status;
+	else if (av[2] != NULL)
+		err_exit("exit", "too many arguments", 1);
+	else if (!isnum(av[1]))
+		err_exit("exit", "numeric argument required", 2);
+	else
+		status = (uint8_t)ft_atoi(av[1]);
+	return (status);
 }
