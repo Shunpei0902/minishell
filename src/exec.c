@@ -16,7 +16,7 @@ void	exec_builtin_command(int builtin_id, char **argv, t_node *node)
 {
 	exec_builtin(builtin_id, argv);
 	reset_redirect(node->redirects);
-	// fatal_error("builtin");
+	exit(g_last_status);
 }
 
 void	exec_external_command(const char *path, char **argv, t_node *node)

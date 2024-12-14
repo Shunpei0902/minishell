@@ -16,6 +16,7 @@
 
 int		g_last_status;
 bool	g_readline_eof;
+pid_t	main_pid;
 
 int	wait_pipe(pid_t last_pid)
 {
