@@ -96,7 +96,7 @@ assert() {
 # Empty line (EOF)
 assert ''
 
-# Absolute path commands without args 
+# Absolute path commands without args
 assert '/bin/pwd'
 assert '/bin/echo'
 assert '/bin/ls'
@@ -222,21 +222,21 @@ assert './infinite_loop'
 
 # Manual Debug
 # $ ./minishell
-# $ 
-# 1. Ctrl-\ 
+# $
+# 1. Ctrl-\
 # 2. Ctrl-C
 # 3. Ctrl-D
 #
 # $ ./minishell
 # $ hogehoge
-# 1. Ctrl-\ 
+# 1. Ctrl-\
 # 2. Ctrl-C
 # 3. Ctrl-D
 #
 # $ ./minishell
 # $ cat <<EOF
 # >
-# 1. Ctrl-\ 
+# 1. Ctrl-\
 # 2. Ctrl-C
 # 3. Ctrl-D
 #
@@ -244,10 +244,17 @@ assert './infinite_loop'
 # $ cat <<EOF
 # > hoge
 # > fuga
-# 1. Ctrl-\ 
+# 1. Ctrl-\
 # 2. Ctrl-C
 # 3. Ctrl-D
 
 assert '|uname'
 assert 'cat lol.c | cat > lol.c'
+assert 'export NO_SUCH_VAR; echo $NO_SUCH_VAR'
+assert 'export NO_SUCH_VAR=42; echo $NO_SUCH_VAR'
+assert 'unset NO_SUCH_VAR=42; echo $NO_SUCH_VAR'
+assert 'export'
+assert 'env'
+assert 'exit 42'
+assert 'echo $?'
 cleanup

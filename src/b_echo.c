@@ -13,12 +13,10 @@
 #include "libft.h"
 #include "minishell.h"
 
-int	b_echo(char **av)
+void b_echo(char **av)
 {
 	bool	op_newline;
 
-	if (!av)
-		return (-1);
 	op_newline = true;
 	if (*++av && ft_strncmp("-n", *av, 2) == 0)
 	{
@@ -27,12 +25,12 @@ int	b_echo(char **av)
 	}
 	while (*av)
 	{
-		write(1, *av, strlen(*av));
+		write(1, *av, ft_strlen(*av));
 		if (*(av + 1))
 			write(1, " ", 1);
 		++av;
 	}
 	if (op_newline)
 		write(1, "\n", 1);
-	return (0);
+	exit(0);
 }

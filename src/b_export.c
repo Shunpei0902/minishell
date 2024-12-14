@@ -32,9 +32,9 @@ int	ft_setenv(const char *name, const char *value, int overwrite)
 	int			index;
 	t_bucket	*curr;
 
-	index = hash(name);
 	if (!g_table)
-		return (-1);
+		fatal_error("hashtable not found");
+	index = hash(name);
 	curr = g_table->entries[index];
 	while (curr)
 	{
@@ -48,7 +48,7 @@ int	ft_setenv(const char *name, const char *value, int overwrite)
 	}
 	curr = malloc(sizeof(t_bucket));
 	if (!curr)
-		return (-1);
+		fatal_error("variable allocation error");
 	curr->key = ft_strdup(name);
 	curr->value = ft_strdup(value);
 	curr->next = NULL;
@@ -73,7 +73,8 @@ t_bucket	*get_key_value(const char *str)
 	}
 	pair->key = malloc(sizeof(char *) * len + 1);
 	if (!pair->key)
-		return (NULL);
+		fatal_error("variable key name allocation error");
+		// return (NULL);
 	ft_strlcpy(pair->key, str, len + 1);
 	pair->value = ft_strdup(cpy);
 	return (pair);
@@ -88,6 +89,8 @@ int	environ_init(void)
 	i = 0;
 	av = environ;
 	pair = malloc(sizeof(t_bucket));
+	if (!pair)
+		return (1);
 	while (av[++i])
 	{
 		pair = get_key_value(av[i++]);
@@ -97,7 +100,7 @@ int	environ_init(void)
 	return (0);
 }
 
-int	b_export(char **av)
+void b_export(char **av)
 {
 	char		**env;
 	t_bucket	*pair;
@@ -110,17 +113,19 @@ int	b_export(char **av)
 		while (*env)
 		{
 			write(1, "declare -x ", 11);
-			write(1, *env, strlen(*env));
+			write(1, *env, ft_strlen(*env));
 			write(1, "\n", 1);
 			env++;
 		}
-		return (0);
+		exit(0);
 	}
 	pair = malloc(sizeof(t_bucket));
+	if (!pair)
+		err_exit("export", "variable allocation error", errno);
 	while (av[i])
 	{
 		pair = get_key_value(av[i++]);
 		ft_setenv(pair->key, pair->value, 1);
 	}
-	return (0);
+	exit(0);
 }

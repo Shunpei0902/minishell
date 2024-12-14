@@ -33,8 +33,10 @@
 extern bool						g_syntax_error;
 extern int						g_last_status;
 extern bool						g_readline_interrupted;
+extern bool                     g_readline_eof;
 extern volatile sig_atomic_t	g_sig;
 extern char						**environ;
+extern char                     g_pwd[PATH_MAX];
 
 // トークンの種類
 typedef enum e_token_type
@@ -133,19 +135,21 @@ char							*extract_non_env_value(char *line, int *i,
 char							*get_expanded_value(char *line, int *i,
 									int *flag);
 int								read_heredoc(char *delimiter);
-int								b_echo(char **av);
-int								b_cd(char **av);
-// int	b_pwd(void);
-int								b_pwd(char **av);
-int								b_export(char **av);
-int								b_unset(char **av);
-// int	b_env(void);
-int								b_env(char **av);
-int								b_exit(char **av);
 
-typedef int						(*t_function)(char **);
+// builtins
+void							b_echo(char **av);
+void							b_cd(char **av);
+void							b_pwd(char **av);
+void							b_export(char **av);
+void							b_unset(char **av);
+void							b_env(char **av);
+void							b_exit(char **av);
+
+typedef void					(*t_function)(char **);
 int								is_builtin(char *cmd);
 int								exec_builtin(int i, char **cmd);
 void							update_environ(void);
-
+int                             ft_setenv(const char *name, const char *value,
+                                    int overwrite);
+void                            set_cleanup_trap(void);
 #endif

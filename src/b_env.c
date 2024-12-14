@@ -13,8 +13,7 @@
 #include "libft.h"
 #include "minishell.h"
 
-// int b_env(void)
-int	b_env(char **av)
+void b_env(char **av)
 {
 	(void)av;
 	while (*environ)
@@ -23,5 +22,5 @@ int	b_env(char **av)
 		write(1, "\n", 1);
 		++environ;
 	}
-	return (0);
+	exit(0);
 }

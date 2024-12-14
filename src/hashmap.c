@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include "hashmap.h"
 #include "libft.h"
 
@@ -26,7 +27,7 @@ void	update_environ(void)
 	j = 0;
 	new = malloc(sizeof(char *) * g_table->var_count);
 	if (!new)
-		return ;
+		fatal_error("environ hashtable allocation failed");
 	while (i < TABLESIZE)
 	{
 		bucket = g_table->entries[i];
@@ -35,7 +36,7 @@ void	update_environ(void)
 			new[j] = ft_strjoin(bucket->key, "=");
 			new[j] = ft_strjoin(new[j], bucket->value);
 			if (!new[j])
-				return ;
+				fatal_error("environ key=value string allocation failed");
 			bucket = bucket->next;
 			j++;
 		}
@@ -77,4 +78,28 @@ t_hashmap	*hashmap_create(void)
 		g_table->entries[i++] = NULL;
 	g_table->var_count = 0;
 	return (g_table);
+}
+
+void	hashmap_destroy(t_hashmap *map)
+{
+	int		index;
+	t_bucket	*curr;
+	t_bucket	*tmp;
+
+	index = -1;
+	while (++index < TABLESIZE)
+	{
+		curr = map->entries[index];
+		tmp = NULL;
+		while (curr)
+		{
+			tmp = curr->next;
+			free(curr->key);
+			free(curr->value);
+			free(curr->next);
+			curr = tmp;
+		}
+	}
+	free(map);
+	map = NULL;
 }

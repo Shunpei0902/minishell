@@ -11,9 +11,11 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdbool.h>
 #include <sys/wait.h>
 
 int		g_last_status;
+bool	g_readline_eof;
 
 int	wait_pipe(pid_t last_pid)
 {
@@ -131,8 +133,10 @@ int	main(void)
 
 	rl_outstream = stderr;
 	g_last_status = 0;
+	g_readline_eof = false;
+	set_cleanup_trap();
 	set_signal();
-	while (1)
+	while (!g_readline_eof)
 	{
 		line = readline("minishell$ ");
 		if (line == NULL)
