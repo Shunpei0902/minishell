@@ -43,10 +43,13 @@ int	b_exit(char **av)
 	if (av[1] == NULL)
 		status = g_last_status;
 	else if (av[2] != NULL)
-		err_exit("exit", "too many arguments", 1);
+	{
+		ft_putstr_fd("exit: too many arguments",STDOUT_FILENO);
+		return (1);
+	}
 	else if (!isnum(av[1]))
 		err_exit("exit", "numeric argument required", 2);
 	else
 		status = (uint8_t)ft_atoi(av[1]);
-	return (status);
+	exit (status);
 }

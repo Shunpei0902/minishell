@@ -12,11 +12,14 @@
 
 #include "minishell.h"
 
-void	exec_builtin_command(int builtin_id, char **argv, t_node *node)
+int	exec_builtin_command(int builtin_id, char **argv, t_node *node)
 {
-	exec_builtin(builtin_id, argv);
+	int	status;
+
+	status = exec_builtin(builtin_id, argv);
+	free_argv(argv);
 	reset_redirect(node->redirects);
-	// fatal_error("builtin");
+	return (status);
 }
 
 void	exec_external_command(const char *path, char **argv, t_node *node)
@@ -47,7 +50,7 @@ void	exec_pipe_child(t_node *node)
 	path = argv[0];
 	builtin_id = is_builtin(argv[0]);
 	if (builtin_id > 0)
-		exec_builtin_command(builtin_id, argv, node);
+		exit((exec_builtin_command(builtin_id, argv, node)));
 	exec_external_command(path, argv, node);
 }
 
