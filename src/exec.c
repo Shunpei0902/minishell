@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+// free_argv(argv);
 int	exec_builtin_command(int builtin_id, char **argv, t_node *node)
 {
 	int	status;
@@ -23,7 +24,7 @@ int	exec_builtin_command(int builtin_id, char **argv, t_node *node)
 
 void	exec_external_command(const char *path, char **argv, t_node *node)
 {
-	extern char	**environ;
+	// extern char	**environ;
 
 	if (path && path[0] != '/' && path[0] != '.')
 		path = search_path(argv[0]);
@@ -35,7 +36,7 @@ void	exec_external_command(const char *path, char **argv, t_node *node)
 
 void	exec_pipe_child(t_node *node)
 {
-	extern char	**environ;
+	// extern char	**environ;
 	const char	*path;
 	char		**argv;
 	int			builtin_id;
@@ -50,6 +51,8 @@ void	exec_pipe_child(t_node *node)
 	builtin_id = is_builtin(argv[0]);
 	if (builtin_id > 0)
 		exit((exec_builtin_command(builtin_id, argv, node)));
+	printf("Child process environ: %p\n", (void*)environ);
+    printf("Child process getenv(\"FI\"): %s\n", getenv("FI"));
 	exec_external_command(path, argv, node);
 }
 

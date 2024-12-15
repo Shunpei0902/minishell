@@ -150,5 +150,6 @@ int								exec_builtin(int i, char **cmd);
 void							update_environ(void);
 int								exec_builtin_command(int builtin_id,
 									char **argv, t_node *node);
+int								ft_setenv(const char *name, const char *value, int overwrite);
 
 #endif

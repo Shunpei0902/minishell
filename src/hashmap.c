@@ -14,17 +14,19 @@
 #include "libft.h"
 
 t_hashmap	*g_table = NULL;
+char		**environ;
 
 void	update_environ(void)
 {
 	int			i;
 	int			j;
 	char		**new;
+	char		*tmp;
 	t_bucket	*bucket;
 
 	i = 0;
 	j = 0;
-	new = malloc(sizeof(char *) * g_table->var_count);
+	new = malloc(sizeof(char *) * (g_table->var_count + 1));
 	if (!new)
 		return ;
 	while (i < TABLESIZE)
@@ -32,15 +34,31 @@ void	update_environ(void)
 		bucket = g_table->entries[i];
 		while (bucket)
 		{
-			new[j] = ft_strjoin(bucket->key, "=");
-			new[j] = ft_strjoin(new[j], bucket->value);
+			// printf("bucket key:%s, value:%s\n", bucket->key, bucket->value);
+			tmp = ft_strjoin(bucket->key, "=");
+			new[j] = ft_strjoin(tmp, bucket->value);
+			free(tmp);
 			if (!new[j])
-				return ;
+			{
+			    while (--j >= 0)
+                    free(new[j]);
+                free(new);
+                return ;
+			}
+			printf("new[%d]:%s\n", j, new[j]);
 			bucket = bucket->next;
 			j++;
 		}
 		i++;
 	}
+	// new[j] = NULL;
+	// environ = new;
+    new[j] = NULL;
+    printf("environ before points to: %p\n", (void*)environ);
+    printf("Before updating environ: %s\n", getenv("PWD"));
+    environ = new;
+    printf("After updating environ: %s\n", getenv("PWD"));
+    printf("environ now points to: %p\n", (void*)environ);
 }
 
 int	ft_strcmp(const char *str1, const char *str2)

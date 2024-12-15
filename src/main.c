@@ -139,10 +139,17 @@ void	interpret(char *line, int *g_last_status)
 	free_tokens(tokens);
 }
 
-int	main(void)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
+	// char		**environ;
 
+	printf("envp:%p\n", envp);
+	printf("envp:%s\n",*envp);
+	if (!environ)
+		environ = envp;
+	printf("environ:%p\n",environ);
+	printf("environ:%s\n",*environ);
 	rl_outstream = stderr;
 	g_last_status = 0;
 	hashmap_create();

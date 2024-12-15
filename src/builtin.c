@@ -32,6 +32,7 @@ int	is_builtin(char *cmd)
 	while (--i >= 0)
 	{
 		len = ft_strlen(builtin[i]);
+		printf("cmd:%s;builtin[%d]=%s\n", cmd, i, builtin[i]);
 		if (ft_strlen(cmd) == len && ft_strncmp(cmd, builtin[i], len) == 0)
 			return (i);
 	}

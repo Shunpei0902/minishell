@@ -40,6 +40,7 @@ int	b_exit(char **av)
 {
 	uint8_t	status;
 
+	printf("-------------");
 	if (av[1] == NULL)
 		status = g_last_status;
 	else if (av[2] != NULL)

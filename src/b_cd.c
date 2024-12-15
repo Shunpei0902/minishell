@@ -17,11 +17,23 @@ int	b_cd(char **av)
 {
 	int		status;
 	char	*path;
+	char	*old_pwd;
+	char	*pwd;
 
+	old_pwd = getcwd(NULL, 0);
 	path = *++av;
 	if (!path || *path == '~')
 		path = getenv("HOME");
 	status = chdir(path);
+	if (status == 0)
+	{
+		pwd = getcwd(NULL, 0);
+		ft_setenv("OLDPWD", old_pwd, 1);
+		ft_setenv("PWD", pwd, 1);
+		update_environ();
+		free(pwd);
+	}
+	free(old_pwd);
 	return (status);
 }
 
