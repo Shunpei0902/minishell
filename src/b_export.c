@@ -90,7 +90,7 @@ int	environ_init(void)
 	pair = malloc(sizeof(t_bucket));
 	while (av[++i])
 	{
-		pair = get_key_value(av[i++]);
+		pair = get_key_value(av[i]);
 		ft_setenv(pair->key, pair->value, 1);
 	}
 	update_environ();
@@ -121,6 +121,7 @@ int	b_export(char **av)
 	{
 		pair = get_key_value(av[i++]);
 		ft_setenv(pair->key, pair->value, 1);
+		update_environ();
 	}
 	return (0);
 }

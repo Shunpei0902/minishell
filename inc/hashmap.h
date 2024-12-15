@@ -38,5 +38,6 @@ void				hashmap_put(t_hashmap *map, const char *key,
 char				*hashmap_get(t_hashmap *map, const char *key);
 void				hashmap_remove(t_hashmap *map, const char *key);
 void				hashmap_destroy(t_hashmap *map);
+int					environ_init(void);
 
 #endif

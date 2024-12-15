@@ -17,7 +17,6 @@ int	exec_builtin_command(int builtin_id, char **argv, t_node *node)
 	int	status;
 
 	status = exec_builtin(builtin_id, argv);
-	free_argv(argv);
 	reset_redirect(node->redirects);
 	return (status);
 }

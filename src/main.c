@@ -145,6 +145,8 @@ int	main(void)
 
 	rl_outstream = stderr;
 	g_last_status = 0;
+	hashmap_create();
+	environ_init();
 	set_signal();
 	while (1)
 	{
@@ -156,5 +158,6 @@ int	main(void)
 		interpret(line, &g_last_status);
 		free(line);
 	}
+	hashmap_destroy(g_table);
 	exit(g_last_status);
 }

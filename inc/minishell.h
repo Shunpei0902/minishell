@@ -86,7 +86,8 @@ typedef struct s_node
 void							set_signal(void);
 void							reset_signal(void);
 char							check_isalpha_isunder(char str);
-void							fatal_error(const char *msg) __attribute__((noreturn));
+void							fatal_error(const char *msg)
+								__attribute__((noreturn));
 void							err_exit(const char *location, const char *msg,
 									int status);
 void							tokenize_error(const char *location,
@@ -147,6 +148,7 @@ typedef int						(*t_function)(char **);
 int								is_builtin(char *cmd);
 int								exec_builtin(int i, char **cmd);
 void							update_environ(void);
-int								exec_builtin_command(int builtin_id, char **argv, t_node *node);
+int								exec_builtin_command(int builtin_id,
+									char **argv, t_node *node);
 
 #endif

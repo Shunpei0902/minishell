@@ -78,3 +78,27 @@ t_hashmap	*hashmap_create(void)
 	g_table->var_count = 0;
 	return (g_table);
 }
+
+void	hashmap_destroy(t_hashmap *map)
+{
+	int			index;
+	t_bucket	*curr;
+	t_bucket	*tmp;
+
+	index = -1;
+	while (++index < TABLESIZE)
+	{
+		curr = map->entries[index];
+		tmp = NULL;
+		while (curr)
+		{
+			tmp = curr->next;
+			free(curr->key);
+			free(curr->value);
+			free(curr->next);
+			curr = tmp;
+		}
+	}
+	free(map);
+	map = NULL;
+}

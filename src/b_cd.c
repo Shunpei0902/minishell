@@ -31,9 +31,8 @@ int	b_pwd(char **av)
 
 	(void)av;
 	buf = getcwd(NULL, 0);
-	// write(1, buf, ft_strlen(buf));
-	// write(1, "\n", 1);
-	printf("buf:%s\n",buf);
+	write(1, buf, ft_strlen(buf));
+	write(1, "\n", 1);
 	free(buf);
 	return (0);
 }

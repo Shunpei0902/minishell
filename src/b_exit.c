@@ -44,7 +44,7 @@ int	b_exit(char **av)
 		status = g_last_status;
 	else if (av[2] != NULL)
 	{
-		ft_putstr_fd("exit: too many arguments",STDOUT_FILENO);
+		ft_putstr_fd("exit: too many arguments", STDOUT_FILENO);
 		return (1);
 	}
 	else if (!isnum(av[1]))
