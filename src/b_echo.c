@@ -17,8 +17,6 @@ int	b_echo(char **av)
 {
 	bool	op_newline;
 
-	if (!av)
-		return (-1);
 	op_newline = true;
 	if (*++av && ft_strncmp("-n", *av, 2) == 0)
 	{
