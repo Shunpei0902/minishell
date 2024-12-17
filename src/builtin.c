@@ -50,6 +50,5 @@ int	exec_builtin(int i, char **cmd)
 		b_exit,
 	};
 
-	run[i](cmd);
-	return (0);
+	return (run[i](cmd));
 }

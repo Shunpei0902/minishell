@@ -47,12 +47,25 @@ int	wait_pipe(pid_t last_pid)
 
 int	exec(t_node *node)
 {
-	int		status;
-	pid_t	last_pid;
+	int			status;
+	pid_t		last_pid;
+	const char	*path;
+	char		**argv;
+	int			builtin_id;
 
 	open_redir_file(node->redirects);
-	last_pid = exec_pipe(node);
-	status = wait_pipe(last_pid);
+	argv = tokens_to_argv(node->args);
+	if (argv == NULL)
+		exit(1);
+	path = argv[0];
+	builtin_id = is_builtin(argv[0]);
+	if (builtin_id >= 0)
+		status = exec_builtin_command(builtin_id, argv, node);
+	else
+	{
+		last_pid = exec_pipe(node);
+		status = wait_pipe(last_pid);
+	}
 	return (status);
 }
 

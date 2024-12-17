@@ -6,22 +6,25 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:07:54 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/15 08:33:28 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/17 14:10:49 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_builtin_command(int builtin_id, char **argv, t_node *node)
+// free_argv(argv);
+int	exec_builtin_command(int builtin_id, char **argv, t_node *node)
 {
-	exec_builtin(builtin_id, argv);
-	// reset_redirect(node->redirects);
-	// fatal_error("builtin");
+	int	status;
+
+	status = exec_builtin(builtin_id, argv);
+	reset_redirect(node->redirects);
+	return (status);
 }
 
 void	exec_external_command(const char *path, char **argv, t_node *node)
 {
-	extern char	**environ;
+	// extern char	**environ;
 
 	if (path && ft_strchr(path, '/') == NULL)
 		path = search_path(argv[0]);
@@ -34,7 +37,7 @@ void	exec_external_command(const char *path, char **argv, t_node *node)
 
 void	exec_pipe_child(t_node *node)
 {
-	extern char	**environ;
+	// extern char	**environ;
 	const char	*path;
 	char		**argv;
 	int			builtin_id;
@@ -48,10 +51,9 @@ void	exec_pipe_child(t_node *node)
 		exit(1);
 	path = argv[0];
 	builtin_id = is_builtin(argv[0]);
-	if (builtin_id > 0)
-		exec_builtin_command(builtin_id, argv, node);
-	else
-		exec_external_command(path, argv, node);
+	if (builtin_id >= 0)
+		exit((exec_builtin_command(builtin_id, argv, node)));
+	exec_external_command(path, argv, node);
 }
 
 void	exec_pipe_parent(t_node *node, pid_t pid)

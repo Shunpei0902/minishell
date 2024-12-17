@@ -137,7 +137,7 @@ typedef int						(*t_function)(char **);
 int								is_builtin(char *cmd);
 int								exec_builtin(int i, char **cmd);
 void							update_environ(void);
-void							exec_builtin_command(int builtin_id,
+int								exec_builtin_command(int builtin_id,
 									char **argv, t_node *node);
 int								ft_setenv(const char *name, const char *value, int overwrite);
 
