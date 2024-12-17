@@ -6,13 +6,14 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 12:28:51 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/17 13:42:43 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "libft.h"
+# include "hashmap.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -34,7 +35,6 @@ extern bool						g_syntax_error;
 extern int						g_last_status;
 extern bool						g_readline_interrupted;
 extern volatile sig_atomic_t	g_sig;
-extern char						**environ;
 
 // トークンの種類
 typedef enum e_token_type

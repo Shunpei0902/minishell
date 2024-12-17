@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:07:54 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 18:37:37 by sasano           ###   ########.fr       */
+/*   Updated: 2024/12/17 13:46:02 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ void	exec_pipe_child(t_node *node)
 		exit(1);
 	path = argv[0];
 	builtin_id = is_builtin(argv[0]);
-	if (builtin_id > 0)
+	if (builtin_id >= 0)
 		exit((exec_builtin_command(builtin_id, argv, node)));
-	printf("Child process environ: %p\n", (void*)environ);
-    printf("Child process getenv(\"FI\"): %s\n", getenv("FI"));
 	exec_external_command(path, argv, node);
 }
 

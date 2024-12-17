@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_exit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 17:34:19 by naokiiida         #+#    #+#             */
-/*   Updated: 2024/12/11 16:52:05 by naokiiida        ###   ########.fr       */
+/*   Created: 2024/12/09 17:34:19 by niida             #+#    #+#             */
+/*   Updated: 2024/12/17 13:51:41 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	b_exit(char **av)
 {
 	uint8_t	status;
 
-	printf("-------------");
 	if (av[1] == NULL)
 		status = g_last_status;
 	else if (av[2] != NULL)

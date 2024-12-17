@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 21:28:47 by naokiiida         #+#    #+#             */
-/*   Updated: 2024/12/11 16:33:49 by naokiiida        ###   ########.fr       */
+/*   Created: 2024/12/09 21:28:47 by niida             #+#    #+#             */
+/*   Updated: 2024/12/17 13:51:41 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "libft.h"
 
 t_hashmap	*g_table = NULL;
-char		**environ;
 
 void	update_environ(void)
 {
@@ -34,7 +33,6 @@ void	update_environ(void)
 		bucket = g_table->entries[i];
 		while (bucket)
 		{
-			// printf("bucket key:%s, value:%s\n", bucket->key, bucket->value);
 			tmp = ft_strjoin(bucket->key, "=");
 			new[j] = ft_strjoin(tmp, bucket->value);
 			free(tmp);
@@ -45,20 +43,13 @@ void	update_environ(void)
                 free(new);
                 return ;
 			}
-			printf("new[%d]:%s\n", j, new[j]);
 			bucket = bucket->next;
 			j++;
 		}
 		i++;
 	}
-	// new[j] = NULL;
-	// environ = new;
-    new[j] = NULL;
-    printf("environ before points to: %p\n", (void*)environ);
-    printf("Before updating environ: %s\n", getenv("PWD"));
-    environ = new;
-    printf("After updating environ: %s\n", getenv("PWD"));
-    printf("environ now points to: %p\n", (void*)environ);
+	new[j] = NULL;
+	environ = new;
 }
 
 int	ft_strcmp(const char *str1, const char *str2)

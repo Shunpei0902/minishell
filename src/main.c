@@ -106,7 +106,7 @@ int	exec(t_node *node)
 		exit(1);
 	path = argv[0];
 	builtin_id = is_builtin(argv[0]);
-	if (builtin_id > 0)
+	if (builtin_id >= 0)
 		status = exec_builtin_command(builtin_id, argv, node);
 	else
 	{
@@ -142,14 +142,7 @@ void	interpret(char *line, int *g_last_status)
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
-	// char		**environ;
 
-	printf("envp:%p\n", envp);
-	printf("envp:%s\n",*envp);
-	if (!environ)
-		environ = envp;
-	printf("environ:%p\n",environ);
-	printf("environ:%s\n",*environ);
 	rl_outstream = stderr;
 	g_last_status = 0;
 	hashmap_create();

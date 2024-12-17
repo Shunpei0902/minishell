@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 13:34:36 by niida             #+#    #+#             */
-/*   Updated: 2024/12/11 16:54:50 by naokiiida        ###   ########.fr       */
+/*   Updated: 2024/12/17 13:51:41 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	is_builtin(char *cmd)
 	while (--i >= 0)
 	{
 		len = ft_strlen(builtin[i]);
-		printf("cmd:%s;builtin[%d]=%s\n", cmd, i, builtin[i]);
 		if (ft_strlen(cmd) == len && ft_strncmp(cmd, builtin[i], len) == 0)
 			return (i);
 	}

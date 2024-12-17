@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 21:28:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2024/12/09 21:28:58 by naokiiida        ###   ########.fr       */
+/*   Created: 2024/12/09 21:28:57 by niida             #+#    #+#             */
+/*   Updated: 2024/12/17 13:53:20 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct hashmap
 }					t_hashmap;
 
 extern t_hashmap	*g_table;
+extern char			**environ;
 
 int					ft_strcmp(const char *str1, const char *str2);
 t_hashmap			*hashmap_create(void);
