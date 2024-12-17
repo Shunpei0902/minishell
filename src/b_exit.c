@@ -3,45 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   b_exit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 17:34:19 by naokiiida         #+#    #+#             */
-/*   Updated: 2024/12/11 16:52:05 by naokiiida        ###   ########.fr       */
+/*   Created: 2024/12/09 17:34:19 by niida             #+#    #+#             */
+/*   Updated: 2024/12/17 13:51:41 by niida            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "minishell.h"
-#include <signal.h>
 
-bool	isnum(char *av)
+bool	isnum(const char *str)
 {
-	while (*av)
-		if (!ft_isdigit(*++av))
-			return (false);
-	return (true);
+	size_t	i;
+
+	i = 0;
+	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+		str++;
+	if (*str == '-' || *str == '+')
+		str++;
+	while (ft_isdigit(*str))
+		str++;
+	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
+		str++;
+	return (str[i] == '\0');
 }
 
+// TODO: on shell exit, pass status to g_last_status and hashmap_destroy();
+/**
+exit [n]
+		Cause the shell to exit with a status of n.  If n is omitted, the exit
+status is that of the last command executed.  A trap on EXIT is executed before
+the shell terminates.
+*/
 int	b_exit(char **av)
 {
-	int	pid;
+	uint8_t	status;
 
 	if (av[1] == NULL)
+		status = g_last_status;
+	else if (av[2] != NULL)
 	{
-		return (0);
-	}
-	if (av[2] != NULL)
-	{
-		printf("exit: too many arguments");
+		ft_putstr_fd("exit: too many arguments", STDOUT_FILENO);
 		return (1);
 	}
-	if (!isnum(*av))
-	{
-		printf("exit: %s: numeric argument required\n", av[1]);
-		return (2);
-	}
-	pid = ft_atoi(av[1]);
-	if (kill(pid, SIGQUIT) == -1)
-		return (1);
-	return (pid);
+	else if (!isnum(av[1]))
+		err_exit("exit", "numeric argument required", 2);
+	else
+		status = (uint8_t)ft_atoi(av[1]);
+	exit (status);
 }

@@ -51,8 +51,8 @@ int	ft_unsetenv(const char *name)
 
 int	b_unset(char **av)
 {
-	while (*av)
-		ft_unsetenv(*av++);
+	while (*++av)
+		ft_unsetenv(*av);
 	update_environ();
 	return (0);
 }

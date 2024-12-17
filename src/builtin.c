@@ -16,7 +16,7 @@
 
 int	is_builtin(char *cmd)
 {
-	static char	*builtin[BUILT_IN_COUNT] = {
+	static char		*builtin[BUILT_IN_COUNT] = {
 		"echo",
 		"cd",
 		"pwd",
@@ -25,12 +25,16 @@ int	is_builtin(char *cmd)
 		"env",
 		"exit",
 	};
-	int			i;
+	int				i;
+	int				len;
 
 	i = BUILT_IN_COUNT;
 	while (--i >= 0)
-		if (ft_strncmp(cmd, builtin[i], ft_strlen(builtin[i])) == 0)
+	{
+		len = ft_strlen(builtin[i]);
+		if (ft_strlen(cmd) == len && ft_strncmp(cmd, builtin[i], len) == 0)
 			return (i);
+	}
 	return (-1);
 }
 

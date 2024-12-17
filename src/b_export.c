@@ -41,7 +41,10 @@ int	ft_setenv(const char *name, const char *value, int overwrite)
 		if (ft_strcmp(curr->key, name) == 0)
 		{
 			if (overwrite != 0)
+			{
+				free(curr->value);
 				curr->value = ft_strdup(value);
+			}
 			return (0);
 		}
 		curr = curr->next;
@@ -53,6 +56,7 @@ int	ft_setenv(const char *name, const char *value, int overwrite)
 	curr->value = ft_strdup(value);
 	curr->next = NULL;
 	g_table->var_count++;
+	g_table->entries[index] = curr;
 	return (0);
 }
 
@@ -88,10 +92,17 @@ int	environ_init(void)
 	i = 0;
 	av = environ;
 	pair = malloc(sizeof(t_bucket));
+	if (!pair)
+		return (-1);
 	while (av[++i])
 	{
-		pair = get_key_value(av[i++]);
+		pair = get_key_value(av[i]);
+		if (!pair)
+			continue ;
 		ft_setenv(pair->key, pair->value, 1);
+		free(pair->key);
+		free(pair->value);
+		free(pair);
 	}
 	update_environ();
 	return (0);
@@ -105,6 +116,8 @@ int	b_export(char **av)
 
 	i = 1;
 	env = environ;
+	if (!pair)
+		return (-1);
 	if (av[1] == NULL)
 	{
 		while (*env)
@@ -117,10 +130,18 @@ int	b_export(char **av)
 		return (0);
 	}
 	pair = malloc(sizeof(t_bucket));
+	if (!pair)
+		err_exit("export", "malloc error", errno);
 	while (av[i])
 	{
 		pair = get_key_value(av[i++]);
+		if (!pair)
+			continue ;
 		ft_setenv(pair->key, pair->value, 1);
+		free(pair->key);
+		free(pair->value);
+		free(pair);
 	}
+	update_environ();
 	return (0);
 }

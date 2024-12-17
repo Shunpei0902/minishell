@@ -16,12 +16,12 @@
 // int b_env(void)
 int	b_env(char **av)
 {
-	(void)av;
-	while (*environ)
+	av = environ;
+	while (*av)
 	{
-		write(1, *environ, ft_strlen(*environ));
+		write(1, *av, ft_strlen(*av));
 		write(1, "\n", 1);
-		++environ;
+		++av;
 	}
 	return (0);
 }
