@@ -21,7 +21,6 @@
 # include <readline/readline.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
@@ -31,7 +30,6 @@ extern bool						g_syntax_error;
 extern int						g_last_status;
 extern bool						g_readline_interrupted;
 extern volatile sig_atomic_t	g_sig;
-extern char						**environ;
 
 typedef enum e_token_type
 {
@@ -77,7 +75,8 @@ typedef struct s_node
 void							set_signal(void);
 void							reset_signal(void);
 char							check_isalpha_isunder(char str);
-void							fatal_error(const char *msg) __attribute__((noreturn));
+void							fatal_error(const char *msg)
+								__attribute__((noreturn));
 void							err_exit(const char *location, const char *msg,
 									int status);
 void							tokenize_error(const char *location,

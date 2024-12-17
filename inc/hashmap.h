@@ -29,6 +29,7 @@ typedef struct hashmap
 }					t_hashmap;
 
 extern t_hashmap	*g_table;
+extern char			**environ;
 
 int					ft_strcmp(const char *str1, const char *str2);
 t_hashmap			*hashmap_create(void);
@@ -38,5 +39,6 @@ void				hashmap_put(t_hashmap *map, const char *key,
 char				*hashmap_get(t_hashmap *map, const char *key);
 void				hashmap_remove(t_hashmap *map, const char *key);
 void				hashmap_destroy(t_hashmap *map);
+int					environ_init(void);
 
 #endif
