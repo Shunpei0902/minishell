@@ -69,3 +69,7 @@ test2
 sample
 error.log
 .vscode/
+.cache/
+compile_commands.json
+*.txt
+*.orig
