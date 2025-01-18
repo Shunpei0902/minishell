@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/15 03:00:01 by sasano           ###   ########.fr       */
+/*   Updated: 2025/01/18 16:58:38 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ typedef struct s_node
 
 void							set_signal(void);
 void							reset_signal(void);
-char							check_isalpha_isunder(char str);
 void							fatal_error(const char *msg) __attribute__((noreturn));
 void							err_exit(const char *location, const char *msg,
 									int status);
@@ -90,15 +89,24 @@ void							free_node(t_node *node);
 bool							check_quote(char *line, int i);
 char							*get_word(char *line, int *i);
 t_token							*tokenize(char *line);
-void							expand(t_token *tokens);
-char							*param_expand(char *line, int *i, int flag);
-char							*quote_expand(char *line, int *i);
 t_node							*parse(t_token *tokens);
 void							open_redir_file(t_node *node);
 void							redirect(t_node *node);
 void							reset_redirect(t_node *node);
 int								read_heredoc(char *delimiter);
 void							expand_heredoc(char **line, int flag);
+
+// expand
+void							expand(t_node *node);
+void							expand_parameter(t_node *node);
+void							expand_word_splitting(t_node *node);
+void							expand_quote_removal(t_node *node);
+char							*param_expand(char *line, int *i, int flag);
+char							*quote_expand(char *line, int *i);
+char							*extract_non_env_value(char *line, int *i,
+									int start, int *flag);
+char							*get_env(char *line, int *i, int *start);
+
 void							prepare_pipe(t_node *node);
 void							pipe_parent(t_node *node);
 void							pipe_child(t_node *node);
@@ -109,8 +117,6 @@ char							*search_path(const char *filename);
 void							validate_path(const char *path,
 									const char *filename);
 pid_t							exec_pipe(t_node *node);
-char							*get_env(char *line, int *i, int *start);
-char							check_isalpha_isunder(char str);
 void							expand_delimiter(char **delimiter, int *flag);
 void							add_token(t_token **head, t_token *current);
 char							validate_quote(char *line, int *i, int *start,
@@ -118,12 +124,9 @@ char							validate_quote(char *line, int *i, int *start,
 enum e_token_type				check_token_type(char *line, int i);
 bool							check_symbol(char *line, int i);
 bool							check_quote(char *line, int i);
-void							skip_single_quotes(char *line, int *i);
-char							*extract_non_env_value(char *line, int *i,
-									int start, int *flag);
-char							*get_expanded_value(char *line, int *i,
-									int *flag);
 int								read_heredoc(char *delimiter);
+
+// buildin
 int								b_echo(char **av);
 int								b_cd(char **av);
 // int	b_pwd(void);

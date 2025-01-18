@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_utils.c                                     :+:      :+:    :+:   */
+/*   expand_parm_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:00:02 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 12:26:07 by sasano           ###   ########.fr       */
+/*   Updated: 2025/01/18 16:36:49 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	check_isalpha_isunder(char str)
+static char	check_isalpha_isunder(char str)
 {
 	if (ft_isalpha(str) || ft_isdigit(str) || str == '_')
 		return (str);
@@ -40,15 +40,10 @@ char	*get_env(char *line, int *i, int *start)
 	return (getenv(ft_substr(line, *start + 1, *i - *start - 1)));
 }
 
-char	*get_expanded_value(char *line, int *i, int *flag)
+static void	skip_single_quotes(char *line, int *i)
 {
-	int		start;
-	char	*value;
-
-	value = get_env(line, i, &start);
-	if (!value && line[start] && line[start] != '$')
-		value = extract_non_env_value(line, i, start, flag);
-	return (value);
+	while (line[++(*i)] && line[*i] != '\'')
+		;
 }
 
 char	*extract_non_env_value(char *line, int *i, int start, int *flag)
@@ -64,10 +59,4 @@ char	*extract_non_env_value(char *line, int *i, int start, int *flag)
 		(*i)++;
 	}
 	return (ft_substr(line, start, *i - start));
-}
-
-void	skip_single_quotes(char *line, int *i)
-{
-	while (line[++(*i)] && line[*i] != '\'')
-		;
 }

@@ -4,10 +4,32 @@ LIBFT = ./libft
 SDIR := src/
 ODIR := obj/
 IDIR := inc/
-SRCS := b_cd.c	b_export.c	expand.c	main.c	redirect.c	exec.c	tokenize.c	b_echo.c	b_unset.c	expand_utils.c\
-        parse_utils.c	redirect_utils.c	utils.c b_env.c	builtin.c	free.c	parser.c	signal.c	b_exit.c\
-		error.c	hashmap.c	pipe.c	tokenize_utils.c
-# SRCS := error.c free.c main.c parser.c redirect.c tokenizer.c pipe.c expand.c signal.c builtin.c b_cd.c b_echo.c b_env.c b_exit.c b_unset.c b_export.c hashmap.c
+SRCS := builtin/builtin.c\
+		builtin/b_echo.c\
+		builtin/b_cd.c\
+		builtin/b_export.c\
+		builtin/b_env.c\
+		builtin/b_unset.c\
+		builtin/b_exit.c\
+		builtin/hashmap.c\
+		tokenize/tokenize.c\
+		tokenize/tokenize_utils.c\
+		parse/parse.c\
+        parse/parse_utils.c\
+		expand/expand.c\
+		expand/expand_parm.c\
+		expand/expand_parm_utils.c\
+		expand/quote_rem.c\
+		expand/word_split.c\
+		exec/exec.c\
+		pipe/pipe.c\
+		redirect/redirect.c\
+		redirect/redirect_utils.c\
+		signal/signal.c\
+		utils/utils.c\
+		utils/free.c\
+		utils/error.c\
+		main.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 # INCS = -DREADLINE_LIBRARY -I$(IDIR) -I$(LIBFT)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
@@ -51,6 +73,7 @@ ft:
 	@make -C $(LIBFT)
 
 $(ODIR)%.o:$(SDIR)%.c | $(ODIR)
+	@$(MKDIR) $(dir $@)
 	$(CC) $(CFLAGS) $(INCS) -o $@ -c $<
 
 $(ODIR):

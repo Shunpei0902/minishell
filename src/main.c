@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/15 02:38:01 by sasano           ###   ########.fr       */
+/*   Updated: 2025/01/18 17:14:10 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,15 @@ int	exec(t_node *node)
 {
 	int		status;
 	pid_t	last_pid;
+	t_node	*tmp;
 
-	open_redir_file(node->redirects);
+	tmp = node;
+	while (tmp)
+	{
+		open_redir_file(tmp->redirects);
+		tmp = tmp->next;
+	}
+	// open_redir_file(node->redirects);
 	last_pid = exec_pipe(node);
 	status = wait_pipe(last_pid);
 	return (status);
@@ -60,7 +67,6 @@ void	interpret(char *line, int *g_last_status)
 	t_node	*node;
 
 	tokens = tokenize(line);
-	expand(tokens);
 	if (tokens->type == TOKEN_EOF)
 		;
 	else if (g_syntax_error)
@@ -71,7 +77,10 @@ void	interpret(char *line, int *g_last_status)
 		if (g_syntax_error)
 			*g_last_status = 2;
 		else
+		{
+			expand(node);
 			*g_last_status = exec(node);
+		}
 		free_node(node);
 	}
 	free_tokens(tokens);

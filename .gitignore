@@ -64,8 +64,5 @@ minishell
 file*
 minishell_tester/
 minitester
-test
-test2
-sample
 error.log
 .vscode/

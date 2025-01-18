@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:07:54 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/15 08:33:28 by sasano           ###   ########.fr       */
+/*   Updated: 2025/01/18 17:12:30 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	exec_external_command(const char *path, char **argv, t_node *node)
 	validate_path(path, argv[0]);
 	execve(path, argv, environ);
 	// reset_redirect(node->redirects);
-	// err_exit("111", "command not found", 127);
 	// fatal_error("execve");
 }
 
@@ -40,18 +39,18 @@ void	exec_pipe_child(t_node *node)
 	int			builtin_id;
 
 	reset_signal();
-	open_redir_file(node->redirects);
+	// open_redir_file(node->redirects);
 	pipe_child(node);
 	redirect(node->redirects);
 	argv = tokens_to_argv(node->args);
 	if (argv == NULL)
 		exit(1);
 	path = argv[0];
-	builtin_id = is_builtin(argv[0]);
-	if (builtin_id > 0)
-		exec_builtin_command(builtin_id, argv, node);
-	else
-		exec_external_command(path, argv, node);
+	// builtin_id = is_builtin(argv[0]);
+	// if (builtin_id > 0)
+	// 	exec_builtin_command(builtin_id, argv, node);
+	// else
+	exec_external_command(path, argv, node);
 }
 
 void	exec_pipe_parent(t_node *node, pid_t pid)
