@@ -7,11 +7,14 @@ IDIR := inc/
 SRCS := builtin/builtin.c\
 		builtin/b_echo.c\
 		builtin/b_cd.c\
+		builtin/b_pwd.c\
 		builtin/b_export.c\
 		builtin/b_env.c\
 		builtin/b_unset.c\
 		builtin/b_exit.c\
-		builtin/hashmap.c\
+		environ/hashmap.c\
+		environ/environ.c\
+		environ/environ_utils.c\
 		tokenize/tokenize.c\
 		tokenize/tokenize_utils.c\
 		parse/parse.c\
@@ -22,6 +25,7 @@ SRCS := builtin/builtin.c\
 		expand/quote_rem.c\
 		expand/word_split.c\
 		exec/exec.c\
+		exec/search_path.c\
 		pipe/pipe.c\
 		redirect/redirect.c\
 		redirect/redirect_utils.c\
@@ -29,6 +33,11 @@ SRCS := builtin/builtin.c\
 		utils/utils.c\
 		utils/free.c\
 		utils/error.c\
+		xlib/xcalloc.c\
+		xlib/xmalloc.c\
+		xlib/xstrdup.c\
+		xlib/xstrcdup.c\
+		xlib/xstrjoin.c\
 		main.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 # INCS = -DREADLINE_LIBRARY -I$(IDIR) -I$(LIBFT)

@@ -3,45 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   b_exit.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:34:19 by naokiiida         #+#    #+#             */
-/*   Updated: 2024/12/11 16:52:05 by naokiiida        ###   ########.fr       */
+/*   Updated: 2025/01/24 18:01:17 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
-#include <signal.h>
 
 bool	isnum(char *av)
 {
+	if (*av == '-' || *av == '+')
+		av++;
+	if (!ft_isdigit(*av))
+		return (false);
 	while (*av)
-		if (!ft_isdigit(*++av))
+	{
+		if (!ft_isdigit(*av))
 			return (false);
+		av++;
+	}
 	return (true);
 }
 
 int	b_exit(char **av)
 {
-	int	pid;
+	int		res;
+	char	*arg;
 
 	if (av[1] == NULL)
-	{
-		return (0);
-	}
+		exit(g_last_status);
 	if (av[2] != NULL)
 	{
-		printf("exit: too many arguments");
+		error_message("exit: ", "too many arguments");
 		return (1);
 	}
-	if (!isnum(*av))
+	arg = av[1];
+	if (isnum(arg))
 	{
-		printf("exit: %s: numeric argument required\n", av[1]);
-		return (2);
+		res = ft_atoi(arg);
+		exit(res);
 	}
-	pid = ft_atoi(av[1]);
-	if (kill(pid, SIGQUIT) == -1)
-		return (1);
-	return (pid);
+	error_message3("exit: ", "numeric argument required: ", arg);
+	exit(255);
 }

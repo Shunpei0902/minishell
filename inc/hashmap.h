@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 21:28:57 by naokiiida         #+#    #+#             */
-/*   Updated: 2024/12/09 21:28:58 by naokiiida        ###   ########.fr       */
+/*   Updated: 2025/01/24 17:08:08 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HASHMAP_H
 # define HASHMAP_H
 # define BUILT_IN_COUNT 7
-# define TABLESIZE 100
+# define TABLESIZE 512
+
+# include <stdbool.h>
 
 typedef struct bucket
 {
@@ -22,21 +24,18 @@ typedef struct bucket
 	struct bucket	*next;
 }					t_bucket;
 
-typedef struct hashmap
-{
-	t_bucket		*entries[TABLESIZE];
-	unsigned int	var_count;
-}					t_hashmap;
+void				init_env(void);
+t_bucket			*hash_get(const char *key);
+void				hash_put(const char *key, const char *value);
+int					hash_unset(const char *key);
+int					hash_num(void);
+unsigned int		hash(const char *key);
 
-extern t_hashmap	*g_table;
+char				**get_environ(void);
+void				init_env(void);
+char				*xgetenv(const char *name);
 
 int					ft_strcmp(const char *str1, const char *str2);
-t_hashmap			*hashmap_create(void);
-int					hash(const char *key);
-void				hashmap_put(t_hashmap *map, const char *key,
-						const char *value);
-char				*hashmap_get(t_hashmap *map, const char *key);
-void				hashmap_remove(t_hashmap *map, const char *key);
-void				hashmap_destroy(t_hashmap *map);
+bool				is_identifier(const char *s);
 
 #endif

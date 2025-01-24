@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   b_env.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: niida <niida@student.42tokyo.jp>           +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 16:54:55 by niida             #+#    #+#             */
-/*   Updated: 2024/04/13 18:20:35 by niida            ###   ########.fr       */
+/*   Updated: 2025/01/23 18:56:34 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "minishell.h"
 
-// int b_env(void)
 int	b_env(char **av)
 {
+	char	**env;
+
 	(void)av;
-	while (*environ)
+	env = get_environ();
+	while (*env)
 	{
-		write(1, *environ, ft_strlen(*environ));
-		write(1, "\n", 1);
-		++environ;
+		ft_putendl_fd(*env, 1);
+		env++;
 	}
 	return (0);
 }

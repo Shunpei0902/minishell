@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   xstrdup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 20:22:27 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/24 17:16:34 by sasano           ###   ########.fr       */
+/*   Created: 2025/01/23 17:44:22 by sasano            #+#    #+#             */
+/*   Updated: 2025/01/24 15:41:03 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_putstr_fd(const char *s, int fd)
+char	*xstrdup(const char *s)
 {
+	char	*str;
+
 	if (!s)
-		return ;
-	write(fd, s, ft_strlen(s));
+		return (NULL);
+	str = ft_strdup(s);
+	if (!str)
+		fatal_error("strdup failed");
+	return (str);
 }
-/*
-int	main(void)
-{
-	ft_putstr_fd("asdfghj", 1);
-	printf("\n");
-	return (0);
-} */

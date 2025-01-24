@@ -1,27 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   xstrjoin.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/21 20:22:27 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/24 17:16:34 by sasano           ###   ########.fr       */
+/*   Created: 2025/01/23 18:42:50 by sasano            #+#    #+#             */
+/*   Updated: 2025/01/23 19:11:55 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-void	ft_putstr_fd(const char *s, int fd)
+char	*xstrjoin(char *s1, char *s2)
 {
-	if (!s)
-		return ;
-	write(fd, s, ft_strlen(s));
+	char	*new;
+
+	new = ft_strjoin(s1, s2);
+	if (new == NULL)
+		fatal_error("ft_strjoin");
+	return (new);
 }
-/*
-int	main(void)
-{
-	ft_putstr_fd("asdfghj", 1);
-	printf("\n");
-	return (0);
-} */

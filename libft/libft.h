@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/25 19:09:27 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/11 12:50:19 by sasano           ###   ########.fr       */
+/*   Updated: 2025/01/24 17:01:54 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void				*ft_memcpy(void *dest, void const *src, size_t n);
 void				*ft_memmove(void *dest, void *src, size_t n);
 void				*ft_memset(void *dest, int c, size_t count);
 void				ft_putchar_fd(char c, int fd);
-void				ft_putendl_fd(char *s, int fd);
+void				ft_putendl_fd(const char *s, int fd);
 void				ft_putnbr_fd(int n, int fd);
-void				ft_putstr_fd(char *s, int fd);
+void				ft_putstr_fd(const char *s, int fd);
 char				**ft_split(char const *s, char c);
 char				*ft_strchr(char const *dest, int c);
 char				*ft_strdup(char const *src);

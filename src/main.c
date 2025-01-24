@@ -6,13 +6,14 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/18 17:14:10 by sasano           ###   ########.fr       */
+/*   Updated: 2025/01/24 20:52:56 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		g_last_status;
+int			g_last_status;
+t_bucket	*g_envmap[TABLESIZE];
 
 int	wait_pipe(pid_t last_pid)
 {
@@ -55,9 +56,13 @@ int	exec(t_node *node)
 		open_redir_file(tmp->redirects);
 		tmp = tmp->next;
 	}
-	// open_redir_file(node->redirects);
-	last_pid = exec_pipe(node);
-	status = wait_pipe(last_pid);
+	if (node->next == NULL && is_builtin(node))
+		status = exec_builtin(node);
+	else
+	{
+		last_pid = exec_pipe(node);
+		status = wait_pipe(last_pid);
+	}
 	return (status);
 }
 
@@ -90,6 +95,7 @@ int	main(void)
 {
 	char	*line;
 
+	init_env();
 	rl_outstream = stderr;
 	g_last_status = 0;
 	set_signal();

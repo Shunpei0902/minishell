@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/18 16:58:38 by sasano           ###   ########.fr       */
+/*   Updated: 2025/01/24 18:00:27 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ extern bool						g_syntax_error;
 extern int						g_last_status;
 extern bool						g_readline_interrupted;
 extern volatile sig_atomic_t	g_sig;
+extern t_bucket					*g_envmap[TABLESIZE];
 extern char						**environ;
 
 typedef enum e_token_type
@@ -74,18 +75,27 @@ typedef struct s_node
 	int							outpipe[2];
 }								t_node;
 
-void							set_signal(void);
-void							reset_signal(void);
-void							fatal_error(const char *msg) __attribute__((noreturn));
+// main
+
+// error
 void							err_exit(const char *location, const char *msg,
 									int status);
 void							tokenize_error(const char *location,
 									char **line);
 void							parse_error(const char *location,
 									t_token **tokens);
+void							fatal_error(const char *msg);
+void							error_message(const char *location,
+									const char *msg);
+void							error_message3(const char *location,
+									const char *msg, const char *arg);
+// free
 void							free_tokens(t_token *tokens);
 void							free_argv(char **argv);
 void							free_node(t_node *node);
+
+void							set_signal(void);
+void							reset_signal(void);
 bool							check_quote(char *line, int i);
 char							*get_word(char *line, int *i);
 t_token							*tokenize(char *line);
@@ -138,8 +148,18 @@ int								b_env(char **av);
 int								b_exit(char **av);
 
 typedef int						(*t_function)(char **);
-int								is_builtin(char *cmd);
-int								exec_builtin(int i, char **cmd);
-void							update_environ(void);
+bool							is_builtin(t_node *node);
+int								exec_builtin(t_node *node);
+;
 
+// xlib
+void							*xcalloc(size_t count, size_t size);
+void							*xmalloc(size_t size);
+char							*xstrdup(const char *s);
+char							*xstrcdup(const char *s, int c);
+char							*xstrjoin(char *s1, char *s2);
+char							*xgetenv(const char *name);
+
+// utils
+int								ft_strcmp(const char *str1, const char *str2);
 #endif

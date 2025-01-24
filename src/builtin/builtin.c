@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: naokiiida <naokiiida@student.42.fr>        +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 13:34:36 by niida             #+#    #+#             */
-/*   Updated: 2024/12/11 16:54:50 by naokiiida        ###   ########.fr       */
+/*   Updated: 2025/01/24 20:53:03 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 #include "libft.h"
 #include "minishell.h"
 
-int	is_builtin(char *cmd)
+bool	is_builtin(t_node *node)
 {
-	static char	*builtin[BUILT_IN_COUNT] = {
+	char	*cmd;
+	int		i;
+
+	static char *builtin[BUILT_IN_COUNT] = {
 		"echo",
 		"cd",
 		"pwd",
@@ -25,27 +28,43 @@ int	is_builtin(char *cmd)
 		"env",
 		"exit",
 	};
-	int			i;
-
-	i = BUILT_IN_COUNT;
-	while (--i >= 0)
-		if (ft_strncmp(cmd, builtin[i], ft_strlen(builtin[i])) == 0)
-			return (i);
-	return (-1);
+	if (node == NULL || node->args == NULL || node->args->value == NULL
+		|| node->args->value[0] == '\0')
+		return (false);
+	cmd = node->args->value;
+	i = 0;
+	while (i < BUILT_IN_COUNT)
+	{
+		if (ft_strcmp(cmd, builtin[i]) == 0)
+			return (true);
+		i++;
+	}
+	return (false);
 }
 
-int	exec_builtin(int i, char **cmd)
+int	exec_builtin(t_node *node)
 {
-	static t_function	run[BUILT_IN_COUNT] = {
-		b_echo,
-		b_cd,
-		b_pwd,
-		b_export,
-		b_unset,
-		b_env,
-		b_exit,
-	};
+	int		status;
+	char	**argv;
 
-	run[i](cmd);
-	return (0);
+	redirect(node->redirects);
+	argv = tokens_to_argv(node->args);
+	if (ft_strcmp(argv[0], "echo") == 0)
+		status = b_echo(argv);
+	else if (ft_strcmp(argv[0], "cd") == 0)
+		status = b_cd(argv);
+	else if (ft_strcmp(argv[0], "pwd") == 0)
+		status = b_pwd(argv);
+	else if (ft_strcmp(argv[0], "export") == 0)
+		status = b_export(argv);
+	else if (ft_strcmp(argv[0], "unset") == 0)
+		status = b_unset(argv);
+	else if (ft_strcmp(argv[0], "env") == 0)
+		status = b_env(argv);
+	else if (ft_strcmp(argv[0], "exit") == 0)
+		status = b_exit(argv);
+	reset_redirect(node->redirects);
+	// free_argv(argv);
+	free(argv);
+	return (status);
 }

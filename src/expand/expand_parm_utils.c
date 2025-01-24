@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:00:02 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/18 16:36:49 by sasano           ###   ########.fr       */
+/*   Updated: 2025/01/23 16:46:56 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*get_env(char *line, int *i, int *start)
 	}
 	while (check_isalpha_isunder(line[*i]))
 		(*i)++;
-	return (getenv(ft_substr(line, *start + 1, *i - *start - 1)));
+	return (xgetenv(ft_substr(line, *start + 1, *i - *start - 1)));
 }
 
 static void	skip_single_quotes(char *line, int *i)
