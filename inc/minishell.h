@@ -25,6 +25,7 @@
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
+# include <sys/wait.h>
 # include <unistd.h>
 
 extern bool						g_syntax_error;
