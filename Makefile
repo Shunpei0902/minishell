@@ -46,7 +46,7 @@ OBJS := $(SRCS:%.c=$(ODIR)%.o)
 DEPS = $(patsubst %.o,%.d, $(OBJS))
 DEPFLAGS := -MMD -MP
 # LDFLAGS := -lreadline -L$(LIBFT) -lft
-# CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS) -std=c99
+CFLAGS = -Wall -Wextra -Werror $(DEPFLAGS) -std=c99
 CC := cc
 MKDIR := mkdir -p
 OS = $(shell uname)

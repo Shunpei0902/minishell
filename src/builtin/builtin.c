@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 13:34:36 by niida             #+#    #+#             */
-/*   Updated: 2025/02/02 02:45:14 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 03:50:39 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	exec_builtin(t_node *node)
 
 	redirect(node->redirects);
 	argv = tokens_to_argv(node->args);
+	status = 0;
 	if (ft_strcmp(argv[0], "echo") == 0)
 		status = b_echo(argv);
 	else if (ft_strcmp(argv[0], "cd") == 0)

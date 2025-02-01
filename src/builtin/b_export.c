@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:34:35 by niida             #+#    #+#             */
-/*   Updated: 2025/02/02 03:08:06 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 03:49:59 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 static void	print_env(void)
 {
 	int		i;
-	int		num;
 	char	*key;
 	char	*value;
 
 	i = 0;
-	num = 0;
 	while (i < TABLESIZE)
 	{
 		if (g_envmap[i])
@@ -34,7 +32,6 @@ static void	print_env(void)
 					printf("=\"%s\"", value);
 				printf("\n");
 			}
-			num++;
 		}
 		i++;
 	}

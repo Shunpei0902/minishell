@@ -6,12 +6,13 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 03:29:19 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 03:59:35 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+#define _POSIX_C_SOURCE 200809L
 # include "hashmap.h"
 # include "libft.h"
 # include <errno.h>
@@ -20,16 +21,15 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stdbool.h>
+// # include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-# include <stdint.h>
+// # include <stdint.h>
 # include <unistd.h>
 
-#define PATH_MAX 4096
 extern bool						g_syntax_error;
 extern int						g_last_status;
 extern bool						g_readline_interrupted;
