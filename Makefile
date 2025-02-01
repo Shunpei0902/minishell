@@ -38,6 +38,8 @@ SRCS := builtin/builtin.c\
 		xlib/xstrdup.c\
 		xlib/xstrcdup.c\
 		xlib/xstrjoin.c\
+		xlib/xdup2.c\
+		xlib/xclose.c\
 		main.c
 OBJS := $(SRCS:%.c=$(ODIR)%.o)
 # INCS = -DREADLINE_LIBRARY -I$(IDIR) -I$(LIBFT)

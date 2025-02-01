@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/06 16:36:41 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/15 02:21:51 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/01 19:32:46 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,19 @@ void	prepare_pipe(t_node *node)
 
 void	pipe_child(t_node *node)
 {
-	close(node->outpipe[0]);
-	close(node->inpipe[1]);
-	dup2(node->inpipe[0], STDIN_FILENO);
+	xclose(node->outpipe[0]);
+	xdup2(node->inpipe[0], STDIN_FILENO);
 	if (node->inpipe[0] != STDIN_FILENO)
-		close(node->inpipe[0]);
-	dup2(node->outpipe[1], STDOUT_FILENO);
+		xclose(node->inpipe[0]);
+	xdup2(node->outpipe[1], STDOUT_FILENO);
 	if (node->outpipe[1] != STDOUT_FILENO)
-		close(node->outpipe[1]);
+		xclose(node->outpipe[1]);
 }
 
 void	pipe_parent(t_node *node)
 {
 	if (node->next)
-		close(node->outpipe[1]);
+		xclose(node->outpipe[1]);
 	if (node->inpipe[0] != STDIN_FILENO)
-		close(node->inpipe[0]);
+		xclose(node->inpipe[0]);
 }

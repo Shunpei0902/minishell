@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:07:54 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/24 18:18:19 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/01 19:32:53 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	exec_external_command(t_node *node)
 	if (path && ft_strchr(path, '/') == NULL)
 		path = search_path(argv[0]);
 	validate_path(path, argv[0]);
-	// printf("path: %s\n", path);
-	// printf("argv[0]: %s\n", argv[0]);
 	execve(path, argv, get_environ());
 	free_argv(argv);
 	reset_redirect(node->redirects);

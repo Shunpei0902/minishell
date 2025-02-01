@@ -36,7 +36,7 @@ char	*search_path(const char *filename)
 	if (filename == NULL || *filename == '\0')
 		return (NULL);
 	env_path = xgetenv("PATH");
-	while (*path)
+	while (env_path && *env_path)
 	{
 		ft_bzero(path, PATH_MAX);
 		value = ft_strchr(env_path, ':');

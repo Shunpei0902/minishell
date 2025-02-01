@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:28:30 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/24 22:24:22 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 01:17:46 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,10 @@ static void	update_env(char *key, char *value)
 int	b_cd(char **av)
 {
 	char	*path;
-	char	*pwd;
+	char	*str;
 	char	*newpwd;
 
-	pwd = xgetenv("PWD");
-	update_env("OLDPWD", pwd);
+	update_env("OLDPWD", xgetenv("PWD"));
 	if (av[1] == NULL)
 	{
 		path = xgetenv("HOME");
@@ -68,8 +67,6 @@ int	b_cd(char **av)
 		error_message3("cd", av[1], ": No such file or directory");
 		return (1);
 	}
-	// newpwd = get_newpwd(path);
-	// update_env("PWD", newpwd);
 	update_env("PWD", getcwd(NULL, 0));
 	return (0);
 }

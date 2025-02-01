@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/24 18:00:27 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/01 18:59:54 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,8 @@ char							*xstrdup(const char *s);
 char							*xstrcdup(const char *s, int c);
 char							*xstrjoin(char *s1, char *s2);
 char							*xgetenv(const char *name);
+int 							xclose(int fd);
+int 							xdup2(int fd1, int fd2);
 
 // utils
 int								ft_strcmp(const char *str1, const char *str2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 03:52:14 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/13 12:11:59 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 01:25:38 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	add_eof_token(t_token **head)
 {
 	t_token	*current;
 
-	current = ft_calloc(1, sizeof(t_token));
+	current = xcalloc(1, sizeof(t_token));
 	current->type = TOKEN_EOF;
 	add_token(head, current);
 }
@@ -56,11 +56,11 @@ static char	*get_symbol(char *line, int *i, t_token_type type)
 
 	if (type == TOKEN_PIPE || type == TOKEN_REDIR_IN || type == TOKEN_REDIR_OUT)
 	{
-		value = ft_calloc(2, sizeof(char));
+		value = xcalloc(2, sizeof(char));
 		value[0] = line[(*i)++];
 		return (value);
 	}
-	value = ft_calloc(3, sizeof(char));
+	value = xcalloc(3, sizeof(char));
 	value[0] = line[(*i)++];
 	value[1] = line[(*i)++];
 	return (value);

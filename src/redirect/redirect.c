@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:59:37 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/17 21:22:43 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 01:21:19 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,14 @@ int	stash_fd(int fd)
 	stashed_fd = 10;
 	while (!fstat(stashed_fd, &statbuf))
 		stashed_fd++;
-	if (dup2(fd, stashed_fd) == -1)
-		fatal_error("dup2");
-	if (close(fd) < 0)
-		fatal_error("close");
+	xdup2(fd, stashed_fd);
+	xclose(fd);
 	return (stashed_fd);
 }
 
 void	open_redir_file(t_node *node)
 {
-	if (!node)
+	if (!node || !node->filename || !node->filename->value)
 		return ;
 	if (node->type == NODE_REDIR_IN && node->filename && node->filename->value)
 		node->filefd = open(node->filename->value, O_RDONLY);
@@ -55,8 +53,7 @@ void	redirect(t_node *node)
 	if (!node)
 		return ;
 	node->stashed_targetfd = stash_fd(node->targetfd);
-	if (dup2(node->filefd, node->targetfd) == -1)
-		fatal_error("dup2");
+	xdup2(node->filefd, node->targetfd);
 	redirect(node->next);
 }
 
@@ -65,9 +62,8 @@ void	reset_redirect(t_node *node)
 	if (!node)
 		return ;
 	reset_redirect(node->next);
-	close(node->filefd);
-	close(node->targetfd);
-	if (dup2(node->stashed_targetfd, node->targetfd) == -1)
-		fatal_error("dup2");
-	close(node->stashed_targetfd);
+	xclose(node->filefd);
+	xclose(node->targetfd);
+	xdup2(node->stashed_targetfd, node->targetfd);
+	xclose(node->stashed_targetfd);
 }
