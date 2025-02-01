@@ -16,8 +16,8 @@ void	validate_path(const char *path, const char *filename)
 {
 	struct stat	st;
 
-	if (path == NULL || *path == '\0' || ft_strcmp(filename, "..") == 0
-		|| access(path, F_OK) < 0)
+	if (path == NULL || *path == '\0' || ft_strcmp(filename, "..") == 0 ||
+		access(path, F_OK) < 0)
 		err_exit(filename, "command not found", 127);
 	if (stat(path, &st) < 0)
 		fatal_error("fstat");

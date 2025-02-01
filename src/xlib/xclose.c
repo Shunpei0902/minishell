@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-int xclose(int fd)
+int	xclose(int fd)
 {
-    if (fd < 0)
-        return (-1);
-    if (close(fd) < 0)
-        fatal_error("xclose");
-    return (0);
+	if (fd < 0)
+		return (-1);
+	if (close(fd) < 0)
+		fatal_error("xclose");
+	return (0);
 }

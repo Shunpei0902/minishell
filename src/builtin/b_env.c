@@ -15,7 +15,7 @@
 int	b_env(char **av)
 {
 	char	**env;
-	int 	i;
+	int		i;
 
 	(void)av;
 	env = get_environ();

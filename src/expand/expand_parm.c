@@ -48,8 +48,8 @@ static void	expand_parm_tok(t_token *tokens)
 	tmp_token = 0;
 	while (tokens && g_syntax_error == false)
 	{
-		if (tokens->type == TOKEN_WORD && (!tmp_token
-				|| tmp_token->type != TOKEN_REDIR_HEREDOC))
+		if (tokens->type == TOKEN_WORD &&
+			(!tmp_token || tmp_token->type != TOKEN_REDIR_HEREDOC))
 		{
 			i = 0;
 			tmp = tokens->value;

@@ -46,7 +46,8 @@ char	*xgetenv(const char *name)
 
 static char	**get_env_from_bucket(char **env, t_bucket *bucket, int *num)
 {
-	char *tmp;
+	char	*tmp;
+
 	while (bucket)
 	{
 		tmp = xstrjoin(bucket->key, "=");

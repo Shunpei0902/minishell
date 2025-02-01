@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-int xdup2(int fd1, int fd2)
+int	xdup2(int fd1, int fd2)
 {
-    int fd;
+	int fd;
 
-    fd = dup2(fd1, fd2);
-    if (fd < 0)
-        fatal_error("xdup2");
-    return (fd);
+	fd = dup2(fd1, fd2);
+	if (fd < 0)
+		fatal_error("xdup2");
+	return (fd);
 }

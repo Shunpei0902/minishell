@@ -28,8 +28,8 @@ bool	is_builtin(t_node *node)
 		"env",
 		"exit",
 	};
-	if (node == NULL || node->args == NULL || node->args->value == NULL
-		|| node->args->value[0] == '\0')
+	if (node == NULL || node->args == NULL || node->args->value == NULL ||
+		node->args->value[0] == '\0')
 		return (false);
 	cmd = node->args->value;
 	i = 0;

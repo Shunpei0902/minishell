@@ -60,7 +60,7 @@ void	append_redirects(t_node **redirects, t_token *token, t_token *filename)
 	t_node		*node;
 	t_node		*tmp;
 	t_node_type	type;
-	
+
 	type = check_redirect(token);
 	node = new_node(type);
 	node->filename = filename;

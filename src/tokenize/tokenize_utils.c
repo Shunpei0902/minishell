@@ -19,9 +19,10 @@ bool	check_quote(char *line, int i)
 
 bool	check_symbol(char *line, int i)
 {
-	return (!line[i] || line[i] == '\n' || line[i] == ' ' || line[i] == '\t'
-		|| line[i] == '\n' || line[i] == '|' || line[i] == '<' || line[i] == '>'
-		|| line[i] == ' ' || line[i] == '\t' || line[i] == '\n');
+	return (!line[i] || line[i] == '\n' || line[i] == ' ' || line[i] == '\t' ||
+			line[i] == '\n' || line[i] == '|' || line[i] == '<' ||
+			line[i] == '>' || line[i] == ' ' || line[i] == '\t' ||
+			line[i] == '\n');
 }
 
 enum e_token_type	check_token_type(char *line, int i)

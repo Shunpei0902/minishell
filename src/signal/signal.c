@@ -51,8 +51,8 @@ void	set_signal(void)
 	sa_quit.sa_handler = SIG_IGN;
 	sigemptyset(&sa_quit.sa_mask);
 	sa_quit.sa_flags = 0;
-	if (sigaction(SIGINT, &sa_int, NULL) == -1 || sigaction(SIGQUIT, &sa_quit,
-			NULL))
+	if (sigaction(SIGINT, &sa_int, NULL) == -1 ||
+		sigaction(SIGQUIT, &sa_quit, NULL))
 		fatal_error("sigaction");
 }
 

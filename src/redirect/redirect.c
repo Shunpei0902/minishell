@@ -33,13 +33,13 @@ void	open_redir_file(t_node *node)
 		return ;
 	if (node->type == NODE_REDIR_IN && node->filename && node->filename->value)
 		node->filefd = open(node->filename->value, O_RDONLY);
-	else if (node->type == NODE_REDIR_OUT && node->filename
-		&& node->filename->value)
-		node->filefd = open(node->filename->value, O_WRONLY | O_CREAT | O_TRUNC,
-				0644);
+	else if (node->type == NODE_REDIR_OUT && node->filename &&
+				node->filename->value)
+		node->filefd =
+			open(node->filename->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (node->type == NODE_REDIR_APPEND)
-		node->filefd = open(node->filename->value,
-				O_WRONLY | O_CREAT | O_APPEND, 0644);
+		node->filefd =
+			open(node->filename->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (node->type == NODE_REDIR_HEREDOC)
 		node->filefd = read_heredoc(node->filename->value);
 	if (node->filefd < 0)

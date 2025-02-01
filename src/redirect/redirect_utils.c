@@ -51,9 +51,10 @@ void	expand_heredoc(char **line, int flag)
 
 bool	should_stop_heredoc(char *line, char *delimiter)
 {
-	return (!line || (ft_strncmp(line, delimiter, ft_strlen(line)) == 0
-			&& *line != '\0') || (*line == '\n' && !delimiter)
-		|| g_readline_interrupted);
+	return (!line ||
+			(ft_strncmp(line, delimiter, ft_strlen(line)) == 0 && *line != '\0')
+				||
+			(*line == '\n' && !delimiter) || g_readline_interrupted);
 }
 
 void	process_heredoc(int fd[2], char *delimiter, int flag)

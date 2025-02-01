@@ -12,7 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-#define _POSIX_C_SOURCE 200809L
+# define _POSIX_C_SOURCE 200809L
 # include "hashmap.h"
 # include "libft.h"
 # include <errno.h>
@@ -162,8 +162,8 @@ char							*xstrdup(const char *s);
 char							*xstrcdup(const char *s, int c);
 char							*xstrjoin(char *s1, char *s2);
 char							*xgetenv(const char *name);
-int 							xclose(int fd);
-int 							xdup2(int fd1, int fd2);
+int								xclose(int fd);
+int								xdup2(int fd1, int fd2);
 
 // utils
 int								ft_strcmp(const char *str1, const char *str2);
