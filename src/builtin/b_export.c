@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:34:35 by niida             #+#    #+#             */
-/*   Updated: 2025/01/24 17:11:26 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 03:08:06 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,11 @@ static void	print_env(void)
 {
 	int		i;
 	int		num;
-	int		size;
 	char	*key;
 	char	*value;
 
 	i = 0;
 	num = 0;
-	size = hash_num();
 	while (i < TABLESIZE)
 	{
 		if (g_envmap[i])
@@ -45,7 +43,6 @@ static void	print_env(void)
 static void	case_no_equal(char *key)
 {
 	t_bucket	*bucket;
-	char		*value;
 
 	bucket = hash_get(key);
 	if (bucket == NULL)
@@ -59,7 +56,6 @@ static int	add_env(char *av)
 {
 	char	*key;
 	char	*value;
-	char	*tmp;
 
 	key = xstrcdup(av, '=');
 	if (!is_identifier(key))

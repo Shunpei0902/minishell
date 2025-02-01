@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 18:34:54 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 01:51:49 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 02:14:14 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_token	*tokdup(t_token *token)
 {
 	t_token	*new_token;
 
-	xcalloc(1, sizeof(t_token));
+	new_token = xcalloc(1, sizeof(t_token));
 	new_token->type = token->type;
 	new_token->value = xstrdup(token->value);
 	if (new_token->value == NULL)

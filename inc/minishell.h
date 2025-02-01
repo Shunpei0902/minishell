@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/01 18:59:54 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 03:29:19 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <stdint.h>
 # include <unistd.h>
 
+#define PATH_MAX 4096
 extern bool						g_syntax_error;
 extern int						g_last_status;
 extern bool						g_readline_interrupted;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   environ.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:33:06 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/24 17:45:25 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 02:43:29 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,8 @@ void	init_env(void)
 	i = 0;
 	while (environ[i])
 	{
-		// printf("environ[%d]: %s\n", i, environ[i]);
 		key = xstrcdup(environ[i], '=');
 		value = ft_strchr(environ[i], '=') + 1;
-		// printf("key: %s\n", key);
 		hash_put(key, value);
 		free(key);
 		i++;
@@ -34,10 +32,6 @@ void	init_env(void)
 		hash_put("SHLVL", "1");
 	if (hash_get("PWD") == NULL)
 		hash_put("PWD", getcwd(NULL, 0));
-	hash_unset("OLDPWD");
-	// hash_put("OLDPWD", "");
-	// hash_unset("IFS");
-	// hash_put("IFS", " \t\n");
 }
 
 char	*xgetenv(const char *name)
@@ -52,10 +46,13 @@ char	*xgetenv(const char *name)
 
 static char	**get_env_from_bucket(char **env, t_bucket *bucket, int *num)
 {
+	char *tmp;
 	while (bucket)
 	{
-		env[*num] = xstrjoin(bucket->key, "=");
+		tmp = xstrjoin(bucket->key, "=");
+		env[*num] = tmp;
 		env[*num] = xstrjoin(env[*num], bucket->value);
+		free(tmp);
 		bucket = bucket->next;
 		(*num)++;
 	}
@@ -76,7 +73,7 @@ char	**get_environ(void)
 	while (i < TABLESIZE)
 	{
 		if (g_envmap[i] && g_envmap[i]->key)
-			env = get_env_from_bucket(env, g_envmap[i], &num);
+			get_env_from_bucket(env, g_envmap[i], &num);
 		i++;
 	}
 	env[num] = NULL;

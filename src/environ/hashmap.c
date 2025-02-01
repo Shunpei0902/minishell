@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashmap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 21:28:47 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/01/24 19:19:33 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 02:54:44 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	hash_unset(const char *key)
 	{
 		if (ft_strcmp(tmp->key, key) == 0)
 		{
-			// printf("key: %s\n", tmp->key);
 			if (prev == NULL)
 				g_envmap[index] = tmp->next;
 			else

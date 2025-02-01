@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 13:34:36 by niida             #+#    #+#             */
-/*   Updated: 2025/01/24 20:53:03 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 02:45:14 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ int	exec_builtin(t_node *node)
 	else if (ft_strcmp(argv[0], "exit") == 0)
 		status = b_exit(argv);
 	reset_redirect(node->redirects);
-	// free_argv(argv);
 	free(argv);
 	return (status);
 }

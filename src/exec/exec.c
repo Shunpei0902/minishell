@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:07:54 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/01 19:32:53 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 03:09:08 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	exec_external_command(t_node *node)
 {
 	const char	*path;
 	char		**argv;
-	extern char	**environ;
-	char		**env;
 
 	argv = tokens_to_argv(node->args);
 	path = argv[0];
@@ -41,7 +39,7 @@ void	exec_pipe_child(t_node *node)
 		exec_external_command(node);
 }
 
-void	exec_pipe_parent(t_node *node, pid_t pid)
+void	exec_pipe_parent(t_node *node)
 {
 	pipe_parent(node);
 	if (node->next)
@@ -59,6 +57,6 @@ pid_t	exec_pipe(t_node *node)
 	else if (pid == 0)
 		exec_pipe_child(node);
 	else
-		exec_pipe_parent(node, pid);
+		exec_pipe_parent(node);
 	return (pid);
 }
