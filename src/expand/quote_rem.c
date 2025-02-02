@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:23 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 14:24:07 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 14:43:22 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	validate_quote_expand(char *line, int *i, int *start, int *end)
 	return (quote_flag);
 }
 
-static char 	*quote_remains(char *value, char *line, int *i)
+static char	*quote_remains(char *value, char *line, int *i)
 {
 	char	*tmp;
 	char	*tmp1;
