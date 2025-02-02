@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 09:20:46 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 20:07:16 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 20:08:57 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,4 @@ void	reset_sig(int signum)
 	sa.sa_handler = SIG_DFL;
 	if (sigaction(signum, &sa, NULL) < 0)
 		fatal_error("sigaction");
-}
-
-void	reset_signal(void)
-{
-	reset_sig(SIGQUIT);
-	reset_sig(SIGINT);
 }

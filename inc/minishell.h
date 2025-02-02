@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 19:30:48 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 20:09:26 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void							free_node(t_node *node);
 void							set_signal(void);
 void							reset_signal(void);
 void							set_signal_parent(void);
+void							reset_signal(void);
 
 // tokenize
 bool							check_quote(char *line, int i);
