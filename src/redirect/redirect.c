@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:59:37 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 16:40:08 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:52:22 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,17 @@ int	stash_fd(int fd)
 	return (stashed_fd);
 }
 
-static int error_case_redirect(t_node *node)
+static int	error_case_redirect(t_node *node)
 {
 	if (node->type == NODE_REDIR_IN || node->type == NODE_REDIR_OUT)
 	{
 		error_message3(node->filename->value, ": ",
 			"No such file or directory");
-		// g_last_status = 1;
+		g_last_status = 1;
 		return (1);
 	}
-	else if (node->type == NODE_REDIR_APPEND || node->type == NODE_REDIR_HEREDOC)
+	else if (node->type == NODE_REDIR_APPEND
+		|| node->type == NODE_REDIR_HEREDOC)
 	{
 		g_last_status = 130;
 		return (130);
