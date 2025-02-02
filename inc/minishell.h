@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 09:50:43 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 10:34:12 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ bool							check_quote(char *line, int i);
 char							*get_word(char *line, int *i);
 t_token							*tokenize(char *line);
 t_node							*parse(t_token *tokens);
-void							open_redir_file(t_node *node);
+int								open_redir_file(t_node *node);
 void							redirect(t_node *node);
 void							reset_redirect(t_node *node);
 int								read_heredoc(char *delimiter);

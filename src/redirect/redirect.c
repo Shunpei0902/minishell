@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:59:37 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 10:06:08 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 10:34:46 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ int	stash_fd(int fd)
 	return (stashed_fd);
 }
 
-void	open_redir_file(t_node *node)
+int	open_redir_file(t_node *node)
 {
 	if (!node || !node->filename || !node->filename->value)
-		return ;
+		return (0);
 	if (node->type == NODE_REDIR_IN && node->filename && node->filename->value)
 		node->filefd = open(node->filename->value, O_RDONLY);
 	else if (node->type == NODE_REDIR_OUT && node->filename
@@ -43,9 +43,15 @@ void	open_redir_file(t_node *node)
 	else if (node->type == NODE_REDIR_HEREDOC)
 		node->filefd = read_heredoc(node->filename->value);
 	if (node->filefd < 0)
-		err_exit(node->filename->value, "open", 1);
+	{
+		error_message3(node->filename->value, ": ",
+			"No such file or directory");
+		g_last_status = 1;
+		return (1);
+	}
 	node->filefd = stash_fd(node->filefd);
 	open_redir_file(node->next);
+	return (0);
 }
 
 void	redirect(t_node *node)
