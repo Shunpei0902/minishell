@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 08:59:25 by sasano            #+#    #+#             */
-/*   Updated: 2024/12/10 12:56:55 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 10:42:59 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	free_node(t_node *node)
 	if (node == NULL)
 		return ;
 	free_tokens(node->args);
+	free_tokens(node->filename);
 	free_node(node->redirects);
 	free_node(node->next);
 	free(node);
