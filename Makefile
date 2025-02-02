@@ -31,6 +31,7 @@ SRCS := builtin/builtin.c\
 		redirect/redirect.c\
 		redirect/redirect_utils.c\
 		signal/signal.c\
+		signal/signal_utils.c\
 		utils/utils.c\
 		utils/free.c\
 		utils/error.c\
@@ -121,7 +122,7 @@ san: fclean
 	@make WITH_ASAN=1 WITH_NDEF=1
 
 v: all
-	valgrind $(NAME)
+	valgrind --trace-children=yes --leak-check=full ./$(NAME)
 
 -include $(DEPS)
 

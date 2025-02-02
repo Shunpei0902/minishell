@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 09:20:46 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 20:08:57 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 20:15:53 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,5 @@ void	set_signal(void)
 	sa_quit.sa_flags = 0;
 	if (sigaction(SIGINT, &sa_int, NULL) == -1 || sigaction(SIGQUIT, &sa_quit,
 			NULL))
-		fatal_error("sigaction");
-}
-
-void	reset_sig(int signum)
-{
-	struct sigaction	sa;
-
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = SIG_DFL;
-	if (sigaction(signum, &sa, NULL) < 0)
 		fatal_error("sigaction");
 }

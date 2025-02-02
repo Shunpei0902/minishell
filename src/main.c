@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 19:39:34 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 20:24:05 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	wait_pipe(pid_t last_pid)
 	while (1)
 	{
 		wait_pid = wait(&wstatus);
-		set_signal();
 		if (wait_pid == last_pid)
 			status = wait_status(wstatus);
 		else if (wait_pid < 0)
@@ -49,6 +48,7 @@ int	wait_pipe(pid_t last_pid)
 			fatal_error("wait");
 		}
 	}
+	set_signal();
 	return (status);
 }
 
