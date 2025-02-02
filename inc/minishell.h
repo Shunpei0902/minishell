@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 10:34:12 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 14:27:04 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,21 @@ void							free_tokens(t_token *tokens);
 void							free_argv(char **argv);
 void							free_node(t_node *node);
 
+// signal
 void							set_signal(void);
 void							reset_signal(void);
+
+
+// tokenize
 bool							check_quote(char *line, int i);
 char							*get_word(char *line, int *i);
 t_token							*tokenize(char *line);
+char 							*get_word_non_sym(char *value, char *line, int *i);
+
+// parse
 t_node							*parse(t_token *tokens);
+
+// redirect
 int								open_redir_file(t_node *node);
 void							redirect(t_node *node);
 void							reset_redirect(t_node *node);

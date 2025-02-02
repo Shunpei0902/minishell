@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/29 18:34:54 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 02:14:14 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 14:38:34 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ t_node	*parse(t_token *tokens)
 			break ;
 		}
 		else
-			parse_error("parse error", &tokens);
+			parse_error(tokens->value, &tokens);
 		tokens = tokens->next;
 	}
 	return (node);

@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 03:52:14 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 01:25:38 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 14:25:42 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	*get_word(char *line, int *i)
 	int		end;
 	char	quote_flag;
 	char	*value;
-	char	*tmp;
 
 	if (!line)
 		return (NULL);
@@ -42,11 +41,7 @@ char	*get_word(char *line, int *i)
 	}
 	value = ft_substr(line, start, end - start);
 	if (!check_symbol(line, *i))
-	{
-		tmp = ft_strjoin(value, get_word(line, i));
-		free(value);
-		value = tmp;
-	}
+		return (get_word_non_sym(value, line, i));
 	return (value);
 }
 

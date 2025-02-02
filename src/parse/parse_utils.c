@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:09:12 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 09:46:13 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 14:40:34 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 t_node_type	check_redirect(t_token *token)
 {
 	if (!token || !token->next || !token->next->value)
+		return (0);
+	if (token->next->type != TOKEN_EOF && token->next->type != TOKEN_WORD)
 		return (0);
 	if (token->type == TOKEN_REDIR_IN)
 		return (NODE_REDIR_IN);

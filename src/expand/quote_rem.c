@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_rem.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:23 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 10:07:03 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 14:24:07 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,26 @@ static char	validate_quote_expand(char *line, int *i, int *start, int *end)
 	return (quote_flag);
 }
 
+static char 	*quote_remains(char *value, char *line, int *i)
+{
+	char	*tmp;
+	char	*tmp1;
+
+	tmp = quote_expand(line, i);
+	tmp1 = xstrjoin(value, tmp);
+	if (value)
+		free(value);
+	if (tmp)
+		free(tmp);
+	return (tmp1);
+}
+
 char	*quote_expand(char *line, int *i)
 {
 	int		start;
 	int		end;
 	char	quote_flag;
 	char	*value;
-	char	*tmp;
 
 	if (!line || line[*i] == '\0')
 		return (NULL);
@@ -55,11 +68,7 @@ char	*quote_expand(char *line, int *i)
 	}
 	value = ft_substr(line, start, end - start);
 	if (line[*i])
-	{
-		tmp = ft_strjoin(value, quote_expand(line, i));
-		free(value);
-		value = tmp;
-	}
+		return (quote_remains(value, line, i));
 	return (value);
 }
 

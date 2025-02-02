@@ -17,6 +17,7 @@ SRCS := builtin/builtin.c\
 		environ/environ_utils.c\
 		tokenize/tokenize.c\
 		tokenize/tokenize_utils.c\
+		tokenize/tokenize_utils_helper.c\
 		parse/parse.c\
         parse/parse_utils.c\
 		expand/expand.c\
