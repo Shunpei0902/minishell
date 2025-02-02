@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 10:35:52 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:37:17 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ int	exec(t_node *node)
 	tmp = node;
 	while (tmp)
 	{
-		if (open_redir_file(tmp->redirects))
-			return (1);
+		status = open_redir_file(tmp->redirects);
+		if (status)
+			return (status);
 		tmp = tmp->next;
 	}
 	if (node->next == NULL && is_builtin(node))

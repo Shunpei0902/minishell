@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:59:37 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 10:34:46 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:40:08 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,23 @@ int	stash_fd(int fd)
 	return (stashed_fd);
 }
 
+static int error_case_redirect(t_node *node)
+{
+	if (node->type == NODE_REDIR_IN || node->type == NODE_REDIR_OUT)
+	{
+		error_message3(node->filename->value, ": ",
+			"No such file or directory");
+		// g_last_status = 1;
+		return (1);
+	}
+	else if (node->type == NODE_REDIR_APPEND || node->type == NODE_REDIR_HEREDOC)
+	{
+		g_last_status = 130;
+		return (130);
+	}
+	return (0);
+}
+
 int	open_redir_file(t_node *node)
 {
 	if (!node || !node->filename || !node->filename->value)
@@ -41,14 +58,9 @@ int	open_redir_file(t_node *node)
 		node->filefd = open(node->filename->value,
 				O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (node->type == NODE_REDIR_HEREDOC)
-		node->filefd = read_heredoc(node->filename->value);
+		node->filefd = read_heredoc(&(node->filename->value));
 	if (node->filefd < 0)
-	{
-		error_message3(node->filename->value, ": ",
-			"No such file or directory");
-		g_last_status = 1;
-		return (1);
-	}
+		return (error_case_redirect(node));
 	node->filefd = stash_fd(node->filefd);
 	open_redir_file(node->next);
 	return (0);

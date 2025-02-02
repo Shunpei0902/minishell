@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:06:54 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 10:09:39 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:19:04 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,16 @@ void	process_heredoc(int fd[2], char *delimiter, int flag)
 	close(fd[1]);
 }
 
-int	read_heredoc(char *delimiter)
+int	read_heredoc(char **delimiter)
 {
 	int	fd[2];
 	int	flag;
 
 	if (pipe(fd) < 0)
 		fatal_error("pipe");
-	expand_delimiter(&delimiter, &flag);
+	expand_delimiter(delimiter, &flag);
 	g_readline_interrupted = false;
-	process_heredoc(fd, delimiter, flag);
+	process_heredoc(fd, *delimiter, flag);
 	if (g_readline_interrupted)
 	{
 		close(fd[0]);

@@ -6,7 +6,7 @@
 /*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 14:45:00 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:17:15 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ t_node							*parse(t_token *tokens);
 int								open_redir_file(t_node *node);
 void							redirect(t_node *node);
 void							reset_redirect(t_node *node);
-int								read_heredoc(char *delimiter);
+int								read_heredoc(char **delimiter);
 void							expand_heredoc(char **line, int flag);
 
 // expand
@@ -144,7 +144,6 @@ char							validate_quote(char *line, int *i, int *start,
 enum e_token_type				check_token_type(char *line, int i);
 bool							check_symbol(char *line, int i);
 bool							check_quote(char *line, int i);
-int								read_heredoc(char *delimiter);
 
 // buildin
 int								b_echo(char **av);
