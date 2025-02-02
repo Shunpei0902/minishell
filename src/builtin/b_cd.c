@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:28:30 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 15:15:26 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 19:52:38 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	error_retrieving(char *str, char *path)
 	update_env("PWD", str);
 	free(str);
 	return (0);
-}	
+}
 
 int	b_cd(char **av)
 {
@@ -58,7 +58,7 @@ int	b_cd(char **av)
 		path = av[1];
 	if (chdir(path) < 0)
 	{
-		error_message3("cd", av[1], ": No such file or directory");
+		error_message3("cd error", av[1], NULL);
 		return (1);
 	}
 	str = getcwd(NULL, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 16:17:15 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 19:30:48 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ void							free_node(t_node *node);
 // signal
 void							set_signal(void);
 void							reset_signal(void);
+void							set_signal_parent(void);
 
 // tokenize
 bool							check_quote(char *line, int i);

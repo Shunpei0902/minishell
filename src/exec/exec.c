@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:07:54 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 03:09:08 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 20:02:39 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,13 @@ void	exec_pipe_child(t_node *node)
 		exec_external_command(node);
 }
 
-void	exec_pipe_parent(t_node *node)
+pid_t	exec_pipe_parent(t_node *node, pid_t pid)
 {
+	set_signal_parent();
 	pipe_parent(node);
 	if (node->next)
-		exec_pipe(node->next);
+		return (exec_pipe(node->next));
+	return (pid);
 }
 
 pid_t	exec_pipe(t_node *node)
@@ -57,6 +59,6 @@ pid_t	exec_pipe(t_node *node)
 	else if (pid == 0)
 		exec_pipe_child(node);
 	else
-		exec_pipe_parent(node);
+		pid = exec_pipe_parent(node, pid);
 	return (pid);
 }

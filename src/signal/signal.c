@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 09:20:46 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 10:00:46 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 20:07:16 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,25 @@ int	check_state(void)
 		g_readline_interrupted = true;
 		rl_replace_line("", 0);
 		rl_done = 1;
-		g_last_status = 130;
 		return (0);
 	}
 	return (0);
+}
+
+void	set_signal_parent(void)
+{
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+
+	sa_int.sa_handler = SIG_IGN;
+	sigemptyset(&sa_int.sa_mask);
+	sa_int.sa_flags = 0;
+	sa_quit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_quit.sa_mask);
+	sa_quit.sa_flags = 0;
+	if (sigaction(SIGINT, &sa_int, NULL) == -1 || sigaction(SIGQUIT, &sa_quit,
+			NULL))
+		fatal_error("sigaction");
 }
 
 void	set_signal(void)

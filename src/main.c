@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 02:31:38 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 16:37:17 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 19:39:34 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,18 @@
 
 int			g_last_status;
 t_bucket	*g_envmap[TABLESIZE];
+
+static int	wait_status(int wstatus)
+{
+	int	status;
+
+	status = 0;
+	if (WIFEXITED(wstatus))
+		status = WEXITSTATUS(wstatus);
+	else if (WIFSIGNALED(status))
+		status = 128 + WTERMSIG(wstatus);
+	return (status);
+}
 
 int	wait_pipe(pid_t last_pid)
 {
@@ -25,13 +37,9 @@ int	wait_pipe(pid_t last_pid)
 	while (1)
 	{
 		wait_pid = wait(&wstatus);
+		set_signal();
 		if (wait_pid == last_pid)
-		{
-			if (WIFSIGNALED(wstatus))
-				status = 128 + WTERMSIG(wstatus);
-			else
-				status = WEXITSTATUS(wstatus);
-		}
+			status = wait_status(wstatus);
 		else if (wait_pid < 0)
 		{
 			if (errno == ECHILD)
