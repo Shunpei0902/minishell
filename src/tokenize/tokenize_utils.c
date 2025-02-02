@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:30:25 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 01:29:26 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 10:10:05 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ bool	check_quote(char *line, int i)
 
 bool	check_symbol(char *line, int i)
 {
-	return (!line[i] || line[i] == '\n' || line[i] == ' ' || line[i] == '\t' ||
-			line[i] == '\n' || line[i] == '|' || line[i] == '<' ||
-			line[i] == '>' || line[i] == ' ' || line[i] == '\t' ||
-			line[i] == '\n');
+	return (!line[i] || line[i] == '\n' || line[i] == ' ' || line[i] == '\t'
+		|| line[i] == '\n' || line[i] == '|' || line[i] == '<'
+		|| line[i] == '>' || line[i] == ' ' || line[i] == '\t'
+		|| line[i] == '\n');
 }
 
 enum e_token_type	check_token_type(char *line, int i)

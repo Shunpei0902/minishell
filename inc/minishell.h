@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 12:00:42 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 03:59:35 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 09:50:43 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,6 @@ void							tokenize_error(const char *location,
 void							parse_error(const char *location,
 									t_token **tokens);
 void							fatal_error(const char *msg);
-void							error_message(const char *location,
-									const char *msg);
 void							error_message3(const char *location,
 									const char *msg, const char *arg);
 // free
@@ -142,18 +140,14 @@ int								read_heredoc(char *delimiter);
 // buildin
 int								b_echo(char **av);
 int								b_cd(char **av);
-// int	b_pwd(void);
 int								b_pwd(char **av);
 int								b_export(char **av);
 int								b_unset(char **av);
-// int	b_env(void);
 int								b_env(char **av);
 int								b_exit(char **av);
-
 typedef int						(*t_function)(char **);
 bool							is_builtin(t_node *node);
 int								exec_builtin(t_node *node);
-;
 
 // xlib
 void							*xcalloc(size_t count, size_t size);

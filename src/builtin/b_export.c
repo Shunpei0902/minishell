@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_export.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:34:35 by niida             #+#    #+#             */
-/*   Updated: 2025/02/02 03:49:59 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 09:50:05 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	add_env(char *av)
 	if (!is_identifier(key))
 	{
 		free(key);
-		error_message("export", "not a valid identifier");
+		error_message3("export", "not a valid identifier", av);
 		return (1);
 	}
 	value = ft_strchr(av, '=');

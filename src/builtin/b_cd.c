@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:28:30 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 03:07:15 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 09:50:32 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	b_cd(char **av)
 		path = xgetenv("HOME");
 		if (path == NULL)
 		{
-			error_message("cd", "HOME not set");
+			error_message3("cd", "HOME not set", NULL);
 			return (1);
 		}
 	}

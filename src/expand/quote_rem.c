@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 16:30:23 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/18 16:33:08 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 10:07:03 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ static void	expand_quote_rem_tok(t_token *tokens)
 	tmp_token = 0;
 	while (tokens && g_syntax_error == false)
 	{
-		if (tokens->type == TOKEN_WORD &&
-			(!tmp_token || tmp_token->type != TOKEN_REDIR_HEREDOC))
+		if (tokens->type == TOKEN_WORD && (!tmp_token
+				|| tmp_token->type != TOKEN_REDIR_HEREDOC))
 		{
 			i = 0;
 			tmp = tokens->value;

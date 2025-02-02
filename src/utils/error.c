@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 13:53:38 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/24 18:56:58 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 09:49:26 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,19 @@ void	err_exit(const char *location, const char *msg, int status)
 	exit(status);
 }
 
-void	error_message(const char *location, const char *msg)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(location, STDERR_FILENO);
-	ft_putchar_fd(' ', STDERR_FILENO);
-	ft_putendl_fd(msg, STDERR_FILENO);
-}
-
 void	error_message3(const char *location, const char *msg, const char *arg)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(location, STDERR_FILENO);
 	ft_putchar_fd(' ', STDERR_FILENO);
 	ft_putstr_fd(msg, STDERR_FILENO);
-	ft_putchar_fd(' ', STDERR_FILENO);
-	ft_putendl_fd(arg, STDERR_FILENO);
+	if (arg)
+	{
+		ft_putchar_fd(' ', STDERR_FILENO);
+		ft_putendl_fd(arg, STDERR_FILENO);
+	}
+	else
+		ft_putchar_fd('\n', STDERR_FILENO);
 }
 
 void	tokenize_error(const char *location, char **line)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/31 18:59:37 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 01:21:19 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 10:06:08 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ void	open_redir_file(t_node *node)
 		return ;
 	if (node->type == NODE_REDIR_IN && node->filename && node->filename->value)
 		node->filefd = open(node->filename->value, O_RDONLY);
-	else if (node->type == NODE_REDIR_OUT && node->filename &&
-				node->filename->value)
-		node->filefd =
-			open(node->filename->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	else if (node->type == NODE_REDIR_OUT && node->filename
+		&& node->filename->value)
+		node->filefd = open(node->filename->value,
+				O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	else if (node->type == NODE_REDIR_APPEND)
-		node->filefd =
-			open(node->filename->value, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		node->filefd = open(node->filename->value,
+				O_WRONLY | O_CREAT | O_APPEND, 0644);
 	else if (node->type == NODE_REDIR_HEREDOC)
 		node->filefd = read_heredoc(node->filename->value);
 	if (node->filefd < 0)

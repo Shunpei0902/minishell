@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:06:54 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/17 22:12:25 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 10:09:39 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ void	expand_heredoc(char **line, int flag)
 
 bool	should_stop_heredoc(char *line, char *delimiter)
 {
-	return (!line ||
-			(ft_strncmp(line, delimiter, ft_strlen(line)) == 0 && *line != '\0')
-				||
-			(*line == '\n' && !delimiter) || g_readline_interrupted);
+	return (!line || (ft_strncmp(line, delimiter,
+				ft_strlen(line)) == 0 && *line != '\0')
+		|| (*line == '\n' && !delimiter)
+		|| g_readline_interrupted);
 }
 
 void	process_heredoc(int fd[2], char *delimiter, int flag)

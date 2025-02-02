@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 18:49:19 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/24 18:57:16 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 10:04:07 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	validate_path(const char *path, const char *filename)
 {
 	struct stat	st;
 
-	if (path == NULL || *path == '\0' || ft_strcmp(filename, "..") == 0 ||
-		access(path, F_OK) < 0)
+	if (path == NULL || *path == '\0' || ft_strcmp(filename, "..") == 0
+		|| access(path, F_OK) < 0)
 		err_exit(filename, "command not found", 127);
 	if (stat(path, &st) < 0)
 		fatal_error("fstat");

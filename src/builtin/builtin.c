@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
+/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/13 13:34:36 by niida             #+#    #+#             */
-/*   Updated: 2025/02/02 03:50:39 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 10:16:21 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@
 
 bool	is_builtin(t_node *node)
 {
-	char	*cmd;
-	int		i;
-
-	static char *builtin[BUILT_IN_COUNT] = {
+	char		*cmd;
+	int			i;
+	static char	*builtin[BUILT_IN_COUNT] = {
 		"echo",
 		"cd",
 		"pwd",
@@ -28,8 +27,9 @@ bool	is_builtin(t_node *node)
 		"env",
 		"exit",
 	};
-	if (node == NULL || node->args == NULL || node->args->value == NULL ||
-		node->args->value[0] == '\0')
+
+	if (node == NULL || node->args == NULL || node->args->value == NULL
+		|| node->args->value[0] == '\0')
 		return (false);
 	cmd = node->args->value;
 	i = 0;

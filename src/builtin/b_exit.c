@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:34:19 by naokiiida         #+#    #+#             */
-/*   Updated: 2025/01/24 18:01:17 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 09:50:30 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	b_exit(char **av)
 		exit(g_last_status);
 	if (av[2] != NULL)
 	{
-		error_message("exit: ", "too many arguments");
+		error_message3("exit: ", "too many arguments", NULL);
 		return (1);
 	}
 	arg = av[1];
