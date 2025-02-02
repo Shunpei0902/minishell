@@ -6,7 +6,7 @@
 /*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 22:24:28 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 09:45:04 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 11:02:18 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,16 @@ char	*param_expand(char *line, int *i, int flag)
 {
 	char	*value;
 	char	*tmp;
-	int		start;
+	// int		start;
 
 	if (!line || !line[*i])
 		return (NULL);
-	start = *i;
+	// start = *i;
+	value = 0;
 	value = get_expanded_value(line, i, &flag);
 	tmp = ft_strjoin(value, param_expand(line, i, flag));
-	if (line[start] != '$')
+	// if (line[start] != '$')
+	if (value)
 		free(value);
 	return (tmp);
 }
