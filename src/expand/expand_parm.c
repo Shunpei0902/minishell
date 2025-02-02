@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_parm.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 22:24:28 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 11:02:18 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 13:44:08 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,22 @@ char	*param_expand(char *line, int *i, int flag)
 {
 	char	*value;
 	char	*tmp;
-	// int		start;
+	char	*tmp1;
+	int		start;
 
 	if (!line || !line[*i])
 		return (NULL);
-	// start = *i;
-	value = 0;
+	start = *i;
+	value = NULL;
+	tmp = NULL;
 	value = get_expanded_value(line, i, &flag);
-	tmp = ft_strjoin(value, param_expand(line, i, flag));
-	// if (line[start] != '$')
-	if (value)
+	tmp = param_expand(line, i, flag);
+	tmp1 = ft_strjoin(value, tmp);
+	if (line[start] != '$')
 		free(value);
-	return (tmp);
+	if (tmp)
+		free(tmp);
+	return (tmp1);
 }
 
 static void	expand_parm_tok(t_token *tokens)

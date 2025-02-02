@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_parm_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 23:00:02 by sasano            #+#    #+#             */
-/*   Updated: 2025/01/23 16:46:56 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 13:44:12 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ static char	check_isalpha_isunder(char str)
 
 char	*get_env(char *line, int *i, int *start)
 {
+	char	*tmp;
+	char	*tmp1;
+
 	*start = *i;
 	if (line[*start] != '$')
 		return (NULL);
@@ -37,7 +40,11 @@ char	*get_env(char *line, int *i, int *start)
 	}
 	while (check_isalpha_isunder(line[*i]))
 		(*i)++;
-	return (xgetenv(ft_substr(line, *start + 1, *i - *start - 1)));
+	tmp = ft_substr(line, *start + 1, *i - *start - 1);
+	tmp1 = xgetenv(tmp);
+	if (tmp)
+		free(tmp);
+	return (tmp1);
 }
 
 static void	skip_single_quotes(char *line, int *i)
