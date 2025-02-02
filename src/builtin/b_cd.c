@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   b_cd.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sasano <shunkotkg0141@gmail.com>           +#+  +:+       +#+        */
+/*   By: sasano <sasano@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 19:28:30 by sasano            #+#    #+#             */
-/*   Updated: 2025/02/02 09:50:32 by sasano           ###   ########.fr       */
+/*   Updated: 2025/02/02 15:15:26 by sasano           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,25 @@ static void	update_env(char *key, char *value)
 	else
 		hash_put(key, value);
 }
+
+static int	error_retrieving(char *str, char *path)
+{
+	char	*tmp;
+
+	if (!str)
+	{
+		error_message3("cd", "error retrieving current directory", NULL);
+		tmp = xstrjoin("/", path);
+		str = xstrjoin(xgetenv("OLDPWD"), tmp);
+		update_env("PWD", str);
+		free(tmp);
+		free(str);
+		return (1);
+	}
+	update_env("PWD", str);
+	free(str);
+	return (0);
+}	
 
 int	b_cd(char **av)
 {
@@ -43,7 +62,5 @@ int	b_cd(char **av)
 		return (1);
 	}
 	str = getcwd(NULL, 0);
-	update_env("PWD", str);
-	free(str);
-	return (0);
+	return (error_retrieving(str, path));
 }
